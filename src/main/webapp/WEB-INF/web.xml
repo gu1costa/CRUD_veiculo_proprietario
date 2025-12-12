@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+
+    <display-name>Sistema DETRAN - CRUD Veículos</display-name>
+
+    <description>
+        Sistema completo de gerenciamento de veículos e proprietários
+    </description>
+
+    <!-- Servlet de Busca -->
+    <servlet>
+        <servlet-name>BuscaServlet</servlet-name>
+        <servlet-class>br.com.detran.crud_veiculo_proprietario.servlet.BuscaServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>BuscaServlet</servlet-name>
+        <url-pattern>/busca</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet de Proprietário -->
+    <servlet>
+        <servlet-name>ProprietarioServlet</servlet-name>
+        <servlet-class>br.com.detran.crud_veiculo_proprietario.servlet.ProprietarioServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProprietarioServlet</servlet-name>
+        <url-pattern>/proprietario</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet de Veículo -->
+    <servlet>
+        <servlet-name>VeiculoServlet</servlet-name>
+        <servlet-class>br.com.detran.crud_veiculo_proprietario.servlet.VeiculoServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>VeiculoServlet</servlet-name>
+        <url-pattern>/veiculo</url-pattern>
+    </servlet-mapping>
+
+    <!-- Página inicial -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>
