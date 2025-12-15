@@ -238,7 +238,7 @@
         <div class="logo">
             <h1>Consulta de Veículos</h1>
         </div>
-        <a href="index.jsp" class="back-btn">← Voltar</a>
+        <a href="../index.jsp" class="back-btn">← Voltar</a>
     </div>
 </div>
 

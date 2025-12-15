@@ -214,7 +214,7 @@
             <h1>Gerenciamento de Veículos</h1>
         </div>
         <div class="header-actions">
-            <a href="index.jsp" class="back-btn">← Voltar</a>
+            <a href="../index.jsp" class="back-btn">← Voltar</a>
             <a href="veiculo?action=novo" class="new-btn">+ Novo Veículo</a>
         </div>
     </div>
