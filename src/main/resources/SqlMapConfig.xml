@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+    <settings
+            cacheModelsEnabled="true"
+            enhancementEnabled="true"
+            lazyLoadingEnabled="true"
+            maxRequests="32"
+            maxSessions="10"
+            maxTransactions="5"
+            useStatementNamespaces="true"
+    />
+
+    <typeAlias alias="Proprietario" type="br.com.detran.crud_veiculo_proprietario.model.Proprietario"/>
+    <typeAlias alias="Veiculo" type="br.com.detran.crud_veiculo_proprietario.model.Veiculo"/>
+
+    <transactionManager type="JDBC">
+        <dataSource type="SIMPLE">
+            <property name="JDBC.Driver" value="org.postgresql.Driver"/>
+            <property name="JDBC.ConnectionURL" value="jdbc:postgresql://localhost:5432/sistema_veiculo_proprietario"/>
+            <property name="JDBC.Username" value="postgres"/>
+            <property name="JDBC.Password" value="postgres"/>
+        </dataSource>
+    </transactionManager>
+
+    <sqlMap resource="maps/Proprietario.xml"/>
+    <sqlMap resource="maps/Veiculo.xml"/>
+
+</sqlMapConfig>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Veiculo">
+
+    <!-- Result Map -->
+    <resultMap id="veiculoResult" class="Veiculo">
+        <result property="id" column="id"/>
+        <result property="placa" column="placa"/>
+        <result property="renavam" column="renavam"/>
+        <result property="idProp" column="id_prop"/>
+    </resultMap>
+
+    <!-- Result Map com Proprietário -->
+    <resultMap id="veiculoComProprietarioResult" class="Veiculo">
+        <result property="id" column="id"/>
+        <result property="placa" column="placa"/>
+        <result property="renavam" column="renavam"/>
+        <result property="idProp" column="id_prop"/>
+        <result property="proprietarioCpfCnpj" column="cpf_cnpj"/>
+        <result property="proprietarioNome" column="nome"/>
+        <result property="proprietarioEndereco" column="endereco"/>
+    </resultMap>
+
+    <!-- INSERT -->
+    <insert id="inserirVeiculo" parameterClass="Veiculo">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT currval('cadastro.veiculo_id_seq')
+        </selectKey>
+        INSERT INTO cadastro.veiculo
+        (placa, renavam, id_prop)
+        VALUES
+        (UPPER(#placa#), #renavam#, #idProp#)
+    </insert>
+
+    <!-- UPDATE -->
+    <update id="atualizarVeiculo" parameterClass="Veiculo">
+        UPDATE cadastro.veiculo
+        SET placa = UPPER(#placa#),
+            renavam = #renavam#,
+            id_prop = #idProp#
+        WHERE id = #id#
+    </update>
+
+    <!-- DELETE -->
+    <delete id="deletarVeiculo" parameterClass="int">
+        DELETE FROM cadastro.veiculo
+        WHERE id = #id#
+    </delete>
+
+    <!-- SELECT ALL -->
+    <select id="buscarTodos" resultMap="veiculoComProprietarioResult">
+        SELECT v.id, v.placa, v.renavam, v.id_prop,
+               p.cpf_cnpj, p.nome, p.endereco
+        FROM cadastro.veiculo v
+                 INNER JOIN cadastro.proprietario p ON v.id_prop = p.id
+        ORDER BY v.placa
+    </select>
+
+    <!-- SELECT BY ID -->
+    <select id="buscarPorId" parameterClass="int" resultMap="veiculoComProprietarioResult">
+        SELECT v.id, v.placa, v.renavam, v.id_prop,
+               p.cpf_cnpj, p.nome, p.endereco
+        FROM cadastro.veiculo v
+                 INNER JOIN cadastro.proprietario p ON v.id_prop = p.id
+        WHERE v.id = #id#
+    </select>
+
+    <!-- SELECT BY PLACA (usando função do banco) -->
+    <select id="buscarPorPlaca" parameterClass="string" resultMap="veiculoComProprietarioResult">
+        SELECT veiculo_id as id,
+               veiculo_placa as placa,
+               veiculo_renavam as renavam,
+               proprietario_id as id_prop,
+               proprietario_cpf_cnpj as cpf_cnpj,
+               proprietario_nome as nome,
+               proprietario_endereco as endereco
+        FROM funcoes.buscar_veiculo_por_placa(#placa#)
+    </select>
+
+    <!-- SELECT BY CPF/CNPJ (usando função do banco) -->
+    <select id="buscarPorCpfCnpj" parameterClass="string" resultMap="veiculoComProprietarioResult">
+        SELECT veiculo_id as id,
+               veiculo_placa as placa,
+               veiculo_renavam as renavam,
+               proprietario_id as id_prop,
+               proprietario_cpf_cnpj as cpf_cnpj,
+               proprietario_nome as nome,
+               proprietario_endereco as endereco
+        FROM funcoes.buscar_veiculo_por_cpf_cnpj(#cpfCnpj#)
+    </select>
+
+    <!-- SELECT BY PROPRIETARIO -->
+    <select id="buscarPorProprietario" parameterClass="int" resultMap="veiculoComProprietarioResult">
+        SELECT v.id, v.placa, v.renavam, v.id_prop,
+               p.cpf_cnpj, p.nome, p.endereco
+        FROM cadastro.veiculo v
+                 INNER JOIN cadastro.proprietario p ON v.id_prop = p.id
+        WHERE v.id_prop = #idProp#
+        ORDER BY v.placa
+    </select>
+
+    <!-- COUNT -->
+    <select id="contarVeiculos" resultClass="int">
+        SELECT COUNT(*)
+        FROM cadastro.veiculo
+    </select>
+
+</sqlMap>
