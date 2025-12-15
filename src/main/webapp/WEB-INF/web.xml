@@ -5,43 +5,34 @@
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-    <display-name>Sistema DETRAN - CRUD Veículos</display-name>
+    <display-name>Sistema DETRAN - Struts + iBATIS</display-name>
 
     <description>
-        Sistema completo de gerenciamento de veículos e proprietários
+        Sistema completo de gerenciamento com Struts 1.3.10 e iBATIS 2.3.4.726
     </description>
 
-    <!-- Servlet de Busca -->
+    <!-- Struts Action Servlet -->
     <servlet>
-        <servlet-name>BuscaServlet</servlet-name>
-        <servlet-class>br.com.detran.crud_veiculo_proprietario.servlet.BuscaServlet</servlet-class>
+        <servlet-name>action</servlet-name>
+        <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>/WEB-INF/struts-config.xml</param-value>
+        </init-param>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>2</param-value>
+        </init-param>
+        <init-param>
+            <param-name>detail</param-name>
+            <param-value>2</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>BuscaServlet</servlet-name>
-        <url-pattern>/busca</url-pattern>
-    </servlet-mapping>
-
-    <!-- Servlet de Proprietário -->
-    <servlet>
-        <servlet-name>ProprietarioServlet</servlet-name>
-        <servlet-class>br.com.detran.crud_veiculo_proprietario.servlet.ProprietarioServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>ProprietarioServlet</servlet-name>
-        <url-pattern>/proprietario</url-pattern>
-    </servlet-mapping>
-
-    <!-- Servlet de Veículo -->
-    <servlet>
-        <servlet-name>VeiculoServlet</servlet-name>
-        <servlet-class>br.com.detran.crud_veiculo_proprietario.servlet.VeiculoServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>VeiculoServlet</servlet-name>
-        <url-pattern>/veiculo</url-pattern>
+        <servlet-name>action</servlet-name>
+        <url-pattern>*.do</url-pattern>
     </servlet-mapping>
 
     <!-- Página inicial -->

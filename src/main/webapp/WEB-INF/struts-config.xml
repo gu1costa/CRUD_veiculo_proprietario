@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+        "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+
+    <!-- Form Beans -->
+    <form-beans>
+        <form-bean name="proprietarioForm"
+                   type="br.com.detran.crud_veiculo_proprietario.form.ProprietarioForm"/>
+        <form-bean name="veiculoForm"
+                   type="br.com.detran.crud_veiculo_proprietario.form.VeiculoForm"/>
+    </form-beans>
+
+    <!-- Action Mappings -->
+    <action-mappings>
+
+        <!-- Proprietario Actions -->
+        <action path="/proprietario"
+                type="br.com.detran.crud_veiculo_proprietario.action.ProprietarioAction"
+                name="proprietarioForm"
+                scope="request"
+                validate="false">
+            <forward name="listar" path="/jsp/proprietarios.jsp"/>
+            <forward name="form" path="/jsp/proprietario-form.jsp"/>
+        </action>
+
+        <!-- Veiculo Actions -->
+        <action path="/veiculo"
+                type="br.com.detran.crud_veiculo_proprietario.action.VeiculoAction"
+                name="veiculoForm"
+                scope="request"
+                validate="false">
+            <forward name="listar" path="/jsp/veiculos.jsp"/>
+            <forward name="form" path="/jsp/veiculo-form.jsp"/>
+        </action>
+
+        <!-- Busca Action -->
+        <action path="/busca"
+                type="br.com.detran.crud_veiculo_proprietario.action.BuscaAction"
+                scope="request"
+                validate="false">
+            <forward name="busca" path="/jsp/busca.jsp"/>
+        </action>
+
+        <!-- Home -->
+        <action path="/home" forward="/index.jsp"/>
+
+    </action-mappings>
+
+    <!-- Message Resources -->
+    <message-resources parameter="ApplicationResources"/>
+
+    <!-- Plug Ins -->
+    <plug-in className="org.apache.struts.tiles.TilesPlugin">
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml"/>
+    </plug-in>
+
+</struts-config>
