@@ -255,7 +255,8 @@
     <div class="card">
         <h3 class="card-title">Informações do Proprietário</h3>
 
-        <form method="post" action="proprietario">
+        <form method="post" action="proprietario.do">
+            <input type="hidden" name="action" value="salvar">
             <% if (isEdicao) { %>
             <input type="hidden" name="id" value="<%= proprietario.getId() %>">
             <% } %>

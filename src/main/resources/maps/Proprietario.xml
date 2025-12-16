@@ -15,13 +15,13 @@
 
     <!-- INSERT -->
     <insert id="inserirProprietario" parameterClass="Proprietario">
-        <selectKey keyProperty="id" resultClass="int">
-            SELECT currval('cadastro.proprietario_id_seq')
+        <selectKey keyProperty="id" resultClass="int" type="pre">
+            SELECT nextval('cadastro.proprietario_id_seq')
         </selectKey>
         INSERT INTO cadastro.proprietario
-        (cpf_cnpj, nome, endereco)
+        (id, cpf_cnpj, nome, endereco)
         VALUES
-        (#cpfCnpj#, #nome#, #endereco#)
+        (#id#, #cpfCnpj#, #nome#, #endereco#)
     </insert>
 
     <!-- UPDATE -->
