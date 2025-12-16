@@ -44,17 +44,15 @@
             <forward name="busca" path="/jsp/busca.jsp"/>
         </action>
 
-        <!-- Home -->
-        <action path="/home" forward="/index.jsp"/>
+        <!-- teste -->
+        <action path="/test"
+                type="br.com.detran.crud_veiculo_proprietario.action.TestAction">
+            <forward name="test" path="/jsp/test.jsp"/>
+        </action>
 
     </action-mappings>
 
-    <!-- Message Resources -->
-    <message-resources parameter="ApplicationResources"/>
-
-    <!-- Plug Ins -->
-    <plug-in className="org.apache.struts.tiles.TilesPlugin">
-        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml"/>
-    </plug-in>
+    <!-- Message Resources (CORRIGIDO) -->
+    <message-resources parameter="ApplicationResources" null="false"/>
 
 </struts-config>
