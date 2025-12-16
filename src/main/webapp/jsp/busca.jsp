@@ -238,7 +238,7 @@
         <div class="logo">
             <h1>Consulta de Veículos</h1>
         </div>
-        <a href="../index.jsp" class="back-btn">← Voltar</a>
+        <a href="${pageContext.request.contextPath}/index.jsp" class="back-btn">← Voltar</a>
     </div>
 </div>
 
@@ -251,7 +251,7 @@
             <button class="tab" onclick="showTab('cpf')">CPF/CNPJ</button>
         </div>
 
-        <form method="get" action="busca" class="search-form active" id="form-placa">
+        <form method="get" action="busca.do" class="search-form active" id="form-placa">
             <input type="hidden" name="tipo" value="placa">
             <div class="form-group">
                 <label for="placa">Número da Placa (sem formatação)</label>
@@ -263,7 +263,7 @@
             <button type="submit" class="btn">Consultar</button>
         </form>
 
-        <form method="get" action="busca" class="search-form" id="form-cpf">
+        <form method="get" action="busca.do" class="search-form" id="form-cpf">
             <input type="hidden" name="tipo" value="cpf">
             <div class="form-group">
                 <label for="cpfCnpj">CPF ou CNPJ (somente números)</label>
