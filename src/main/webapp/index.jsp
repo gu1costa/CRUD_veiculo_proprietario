@@ -107,7 +107,7 @@
             <div class="icon">🔍</div>
             <h2>Buscar Veículos</h2>
             <p>Consulte veículos por placa ou CPF/CNPJ do proprietário</p>
-            <a href="busca" class="btn">Acessar Busca</a>
+            <a href="busca.do?action=busca" class="btn">Acessar Busca</a>
         </div>
 
         <div class="menu-card">
