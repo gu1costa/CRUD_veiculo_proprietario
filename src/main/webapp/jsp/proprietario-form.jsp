@@ -341,7 +341,9 @@
 
         <div class="add-vehicle-form">
             <h3 style="margin-bottom: 20px; color: #2d3748;">➕ Adicionar Novo Veículo</h3>
-            <form method="post" action="veiculo.do">
+            <form method="post" action="${pageContext.request.contextPath}/veiculo.do">
+                <input type="hidden" name="action" value="salvar">
+                <input type="hidden" name="origem" value="proprietario">
                 <input type="hidden" name="idProp" value="<%= proprietario.getId() %>">
 
                 <div class="form-row">
