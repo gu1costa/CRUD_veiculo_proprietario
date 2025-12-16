@@ -34,6 +34,7 @@
                 validate="false">
             <forward name="listar" path="/jsp/veiculos.jsp"/>
             <forward name="form" path="/jsp/veiculo-form.jsp"/>
+            <forward name="proprietarioForm" path="/jsp/proprietario-form.jsp"/>
         </action>
 
         <!-- Busca Action -->
@@ -52,7 +53,7 @@
 
     </action-mappings>
 
-    <!-- Message Resources (CORRIGIDO) -->
+    <!-- Message Resources -->
     <message-resources parameter="ApplicationResources" null="false"/>
 
 </struts-config>

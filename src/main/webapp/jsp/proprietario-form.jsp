@@ -325,11 +325,12 @@
                         <strong>RENAVAM:</strong> <%= v.getRenavam() %>
                     </div>
                 </div>
-                <a href="veiculo.do?action=deletar&id=<%= v.getId() %>&idProp=<%= proprietario.getId() %>"
+                <a href="veiculo.do?action=deletar&id=<%= v.getId() %>&idProp=<%= proprietario.getId() %>&origem=proprietario"
                    class="btn btn-small btn-danger"
                    onclick="return confirm('Tem certeza que deseja remover este veículo?')">
                     🗑️ Remover
                 </a>
+
             </div>
             <% } %>
         </div>

@@ -97,12 +97,19 @@ public class VeiculoAction extends Action {
         String idProp = request.getParameter("idProp");
 
         veiculoDAO.deletar(id);
-        request.setAttribute("mensagem", "Veículo removido com sucesso!");
 
         if ("proprietario".equals(origem) && idProp != null) {
-            return new ActionForward("/proprietario.do?action=editar&id=" + idProp, true);
+            Proprietario proprietario = proprietarioDAO.buscarPorId(Integer.parseInt(idProp));
+            request.setAttribute("proprietario", proprietario);
+
+            List<Veiculo> veiculos = veiculoDAO.buscarPorProprietario(proprietario.getId());
+            request.setAttribute("veiculos", veiculos);
+
+            request.setAttribute("msg", "veiculo_deletado"); // msg usada no JSP
+            return mapping.findForward("proprietarioForm"); // JSP do formulário
         }
 
+        request.setAttribute("mensagem", "Veículo removido com sucesso!");
         return listar(mapping, request);
     }
 }
