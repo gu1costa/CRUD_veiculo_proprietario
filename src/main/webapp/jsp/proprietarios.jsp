@@ -202,7 +202,7 @@
         </div>
         <div class="header-actions">
             <a href="index.jsp" class="back-btn">← Voltar</a>
-            <a href="proprietario?action=novo" class="new-btn">+ Novo Proprietário</a>
+            <a href="proprietario.do?action=novo" class="new-btn">+ Novo Proprietário</a>
         </div>
     </div>
 </div>
@@ -249,10 +249,10 @@
                 <td><%= p.getEndereco() %></td>
                 <td>
                     <div class="actions">
-                        <a href="proprietario?action=editar&id=<%= p.getId() %>" class="btn btn-sm btn-outline">
+                        <a href="proprietario.do?action=editar&id=<%= p.getId() %>" class="btn btn-sm btn-outline">
                             Editar
                         </a>
-                        <a href="proprietario?action=deletar&id=<%= p.getId() %>"
+                        <a href="proprietario.do?action=deletar&id=<%= p.getId() %>"
                            class="btn btn-sm btn-danger"
                            onclick="return confirm('ATENÇÃO: Esta ação irá remover o proprietário e todos os veículos associados. Deseja continuar?')">
                             Remover
@@ -270,7 +270,7 @@
     <div class="empty-state">
         <h3>Nenhum proprietário cadastrado</h3>
         <p>Cadastre o primeiro proprietário para começar</p>
-        <a href="proprietario?action=novo" class="btn" style="margin-top: 20px;">Cadastrar Proprietário</a>
+        <a href="proprietario.do?action=novo" class="btn" style="margin-top: 20px;">Cadastrar Proprietário</a>
     </div>
     <% } %>
 </div>

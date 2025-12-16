@@ -205,7 +205,7 @@
             <h1>Cadastro de Veículo</h1>
         </div>
         <div class="header-actions">
-            <a href="veiculo?action=listar" class="back-btn">← Voltar para Lista</a>
+            <a href="veiculo.do?action=listar" class="back-btn">← Voltar para Lista</a>
         </div>
     </div>
 </div>
@@ -220,7 +220,7 @@
     <% if (proprietarios == null || proprietarios.isEmpty()) { %>
     <div class="alert alert-warning">
         <strong>Atenção!</strong> Não há proprietários cadastrados.
-        É necessário <a href="proprietario?action=novo">cadastrar um proprietário</a> antes de adicionar veículos.
+        É necessário <a href="proprietario.do?action=novo">cadastrar um proprietário</a> antes de adicionar veículos.
     </div>
     <% } else { %>
 
@@ -283,7 +283,7 @@
                     <button type="submit" class="btn">
                         <%= isEdicao ? "Salvar Alterações" : "Cadastrar Veículo" %>
                     </button>
-                    <a href="veiculo?action=listar" class="btn btn-outline">Cancelar</a>
+                    <a href="veiculo.do?action=listar" class="btn btn-outline">Cancelar</a>
                 </div>
             </form>
         </div>

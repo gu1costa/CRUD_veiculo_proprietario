@@ -215,7 +215,7 @@
         </div>
         <div class="header-actions">
             <a href="../index.jsp" class="back-btn">← Voltar</a>
-            <a href="veiculo?action=novo" class="new-btn">+ Novo Veículo</a>
+            <a href="veiculo.do?action=novo" class="new-btn">+ Novo Veículo</a>
         </div>
     </div>
 </div>
@@ -223,7 +223,7 @@
 <div class="main-content">
     <div class="page-title">
         <h2>Veículos Cadastrados</h2>
-        <a href="veiculo?action=novo" class="btn">+ Adicionar Veículo</a>
+        <a href="veiculo.do?action=novo" class="btn">+ Adicionar Veículo</a>
     </div>
 
     <%
@@ -269,10 +269,10 @@
                 <td><%= v.getProprietarioCpfCnpj() %></td>
                 <td>
                     <div class="actions">
-                        <a href="veiculo?action=editar&id=<%= v.getId() %>" class="btn btn-sm btn-outline">
+                        <a href="veiculo.do?action=editar&id=<%= v.getId() %>" class="btn btn-sm btn-outline">
                             Editar
                         </a>
-                        <a href="veiculo?action=deletar&id=<%= v.getId() %>&origem=veiculo"
+                        <a href="veiculo.do?action=deletar&id=<%= v.getId() %>&origem=veiculo"
                            class="btn btn-sm btn-danger"
                            onclick="return confirm('Deseja realmente remover este veículo?')">
                             Remover
@@ -290,7 +290,7 @@
     <div class="empty-state">
         <h3>Nenhum veículo cadastrado</h3>
         <p>Cadastre o primeiro veículo para começar</p>
-        <a href="veiculo?action=novo" class="btn" style="margin-top: 20px;">Cadastrar Veículo</a>
+        <a href="veiculo.do?action=novo" class="btn" style="margin-top: 20px;">Cadastrar Veículo</a>
     </div>
     <% } %>
 </div>

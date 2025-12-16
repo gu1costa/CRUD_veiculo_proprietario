@@ -245,7 +245,7 @@
             %>
             <h1><%= isEdicao ? "Editar Proprietário" : "Novo Proprietário" %></h1>
         </div>
-        <a href="proprietario?action=listar" class="back-btn">← Voltar para Lista</a>
+        <a href="proprietario.do?action=listar" class="back-btn">← Voltar para Lista</a>
     </div>
 </div>
 
@@ -296,7 +296,7 @@
                 <button type="submit" class="btn">
                     <%= isEdicao ? "💾 Salvar Alterações" : "➕ Cadastrar Proprietário" %>
                 </button>
-                <a href="proprietario?action=listar" class="btn btn-secondary">Cancelar</a>
+                <a href="proprietario.do?action=listar" class="btn btn-secondary">Cancelar</a>
             </div>
         </form>
     </div>
@@ -325,7 +325,7 @@
                         <strong>RENAVAM:</strong> <%= v.getRenavam() %>
                     </div>
                 </div>
-                <a href="veiculo?action=deletar&id=<%= v.getId() %>&idProp=<%= proprietario.getId() %>"
+                <a href="veiculo.do?action=deletar&id=<%= v.getId() %>&idProp=<%= proprietario.getId() %>"
                    class="btn btn-small btn-danger"
                    onclick="return confirm('Tem certeza que deseja remover este veículo?')">
                     🗑️ Remover
