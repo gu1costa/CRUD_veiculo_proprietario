@@ -26,14 +26,13 @@
 
     <!-- INSERT -->
     <insert id="inserirVeiculo" parameterClass="Veiculo">
-        <selectKey keyProperty="id" resultClass="int">
-            SELECT currval('cadastro.veiculo_id_seq')
+        <selectKey keyProperty="id" resultClass="int" type="pre">
+            SELECT nextval('cadastro.veiculo_id_seq')
         </selectKey>
-        INSERT INTO cadastro.veiculo
-        (placa, renavam, id_prop)
-        VALUES
-        (UPPER(#placa#), #renavam#, #idProp#)
+        INSERT INTO cadastro.veiculo (id, placa, renavam, id_prop)
+        VALUES (#id#, UPPER(#placa#), #renavam#, #idProp#)
     </insert>
+
 
     <!-- UPDATE -->
     <update id="atualizarVeiculo" parameterClass="Veiculo">

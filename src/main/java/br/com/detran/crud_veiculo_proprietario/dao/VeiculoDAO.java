@@ -18,14 +18,23 @@ public class VeiculoDAO {
 
     public boolean inserir(Veiculo veiculo) {
         try {
+            sqlMapClient.startTransaction();
             sqlMapClient.insert("Veiculo.inserirVeiculo", veiculo);
+            sqlMapClient.commitTransaction();
             System.out.println("✓ Veículo inserido! ID: " + veiculo.getId());
             return true;
         } catch (SQLException e) {
             System.err.println("✗ Erro ao inserir veículo: " + e.getMessage());
             return false;
+        } finally {
+            try {
+                sqlMapClient.endTransaction();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
+
 
     public boolean atualizar(Veiculo veiculo) {
         try {
