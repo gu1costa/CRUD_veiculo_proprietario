@@ -158,16 +158,6 @@
             </p>
             <a href="${pageContext.request.contextPath}/proprietario.do?action=listar" class="btn">Gerenciar</a>
         </div>
-
-        <div class="card">
-            <div class="card-icon">🚙</div>
-            <h3 class="card-title">Gerenciar Veículos</h3>
-            <p class="card-description">
-                Cadastro, edição e gerenciamento de veículos.
-                Visualize e gerencie todos os veículos cadastrados.
-            </p>
-            <a href="${pageContext.request.contextPath}/veiculo.do?action=listar" class="btn">Gerenciar</a>
-        </div>
     </div>
 </div>
 
