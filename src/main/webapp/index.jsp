@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sistema DETRAN - Busca de Veículos</title>
+    <title>Sistema DETRAN - Gerenciamento de Veículos</title>
     <style>
         * {
             margin: 0;
@@ -11,112 +11,168 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f5;
             min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .header {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            text-align: center;
+            background: #0056a6;
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 3px solid #003366;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        .page-title {
+            color: #0056a6;
             margin-bottom: 30px;
+            font-size: 28px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
         }
 
-        h1 {
-            color: #2d3748;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #718096;
-            font-size: 1.1em;
-        }
-
-        .menu-grid {
+        .dashboard-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
         }
 
-        .menu-card {
+        .card {
             background: white;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            text-align: center;
-            transition: transform 0.3s ease;
+            transition: transform 0.2s;
         }
 
-        .menu-card:hover {
-            transform: translateY(-5px);
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: #0056a6;
         }
 
-        .menu-card h2 {
-            color: #2d3748;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-        }
-
-        .menu-card p {
-            color: #718096;
+        .card-icon {
+            font-size: 40px;
             margin-bottom: 20px;
+            color: #0056a6;
+        }
+
+        .card-title {
+            color: #1f2937;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .card-description {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 25px;
         }
 
         .btn {
             display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 25px;
+            background: #0056a6;
             color: white;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
         .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            background: #004494;
         }
 
-        .icon {
-            font-size: 3em;
-            margin-bottom: 15px;
+        .footer {
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            padding: 20px;
+            text-align: center;
+            color: #6b7280;
+            margin-top: auto;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1>🚗 Sistema DETRAN</h1>
-        <p class="subtitle">Sistema de Consulta e Gerenciamento de Veículos</p>
-    </div>
-
-    <div class="menu-grid">
-        <div class="menu-card">
-            <div class="icon">🔍</div>
-            <h2>Buscar Veículos</h2>
-            <p>Consulte veículos por placa ou CPF/CNPJ do proprietário</p>
-            <a href="busca.do?action=busca" class="btn">Acessar Busca</a>
-        </div>
-
-        <div class="menu-card">
-            <div class="icon">👥</div>
-            <h2>Gerenciar Proprietários</h2>
-            <p>Cadastre, edite e gerencie proprietários e seus veículos</p>
-            <a href="proprietario.do?action=listar" class="btn">Gerenciar</a>
+<div class="header">
+    <div class="header-content">
+        <div class="logo">
+            <h1>Sistema DETRAN</h1>
         </div>
     </div>
+</div>
+
+<div class="main-content">
+    <h2 class="page-title">Painel de Controle</h2>
+
+    <div class="dashboard-cards">
+        <div class="card">
+            <div class="card-icon">🔍</div>
+            <h3 class="card-title">Consultar Veículos</h3>
+            <p class="card-description">
+                Consulte veículos por placa, RENAVAM ou CPF/CNPJ do proprietário.
+                Acesso rápido às informações cadastrais.
+            </p>
+            <a href="${pageContext.request.contextPath}/busca.do" class="btn">Acessar Consulta</a>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">👥</div>
+            <h3 class="card-title">Gerenciar Proprietários</h3>
+            <p class="card-description">
+                Cadastro, edição e gerenciamento de proprietários e seus veículos.
+                Controle completo de dados cadastrais.
+            </p>
+            <a href="${pageContext.request.contextPath}/proprietario.do?action=listar" class="btn">Gerenciar</a>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🚙</div>
+            <h3 class="card-title">Gerenciar Veículos</h3>
+            <p class="card-description">
+                Cadastro, edição e gerenciamento de veículos.
+                Visualize e gerencie todos os veículos cadastrados.
+            </p>
+            <a href="${pageContext.request.contextPath}/veiculo.do?action=listar" class="btn">Gerenciar</a>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>Sistema DETRAN - Versão 1.0 | © 2025 Departamento Estadual de Trânsito</p>
 </div>
 </body>
 </html>
