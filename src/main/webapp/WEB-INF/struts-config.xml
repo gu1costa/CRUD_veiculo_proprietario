@@ -44,12 +44,6 @@
             <forward name="busca" path="/jsp/busca.jsp"/>
         </action>
 
-        <!-- teste -->
-        <action path="/test"
-                type="br.com.detran.crud_veiculo_proprietario.action.TestAction">
-            <forward name="test" path="/jsp/test.jsp"/>
-        </action>
-
     </action-mappings>
 
     <!-- Message Resources -->
