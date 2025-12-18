@@ -256,8 +256,7 @@
             <div class="form-group">
                 <label for="placa">Número da Placa (sem formatação)</label>
                 <input type="text" id="placa" name="valor" class="form-control"
-                       placeholder="Ex: ABC1234 (7 caracteres)" maxlength="7" required
-                       pattern="[A-Za-z]{3}[0-9]{4}"
+                       placeholder="Ex: ABC1D23 (7 caracteres)" maxlength="7" required
                        title="Digite 3 letras seguidas de 4 números. Ex: ABC1234">
             </div>
             <button type="submit" class="btn">Consultar</button>
