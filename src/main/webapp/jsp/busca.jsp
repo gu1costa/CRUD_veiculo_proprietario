@@ -230,6 +230,27 @@
             color: #6b7280;
             margin-top: auto;
         }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 30px; /* Espaçamento considerável entre Voltar e Imprimir */
+        }
+
+        .btn-print-header {
+            background: #ffffff;
+            color: #0056a6;
+            padding: 8px 15px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 2px;
+            transition: background 0.2s;
+        }
+
+        .btn-print-header:hover {
+            background: #e5e7eb;
+        }
     </style>
 </head>
 <body>
@@ -238,7 +259,16 @@
         <div class="logo">
             <h1>Consulta de Veículos</h1>
         </div>
-        <a href="${pageContext.request.contextPath}/index.jsp" class="back-btn">← Voltar</a>
+
+        <div class="header-actions">
+            <a href="${pageContext.request.contextPath}/gerarRelatorio.do"
+               class="btn-print-header"
+               target="_blank">
+                Imprimir Relatório
+            </a>
+
+            <a href="${pageContext.request.contextPath}/index.jsp" class="back-btn">← Voltar</a>
+        </div>
     </div>
 </div>
 
@@ -259,6 +289,7 @@
                        placeholder="Ex: ABC1D23 (7 caracteres)" maxlength="7" required
                        title="Digite 3 letras seguidas de 4 números. Ex: ABC1234">
             </div>
+
             <button type="submit" class="btn">Consultar</button>
         </form>
 
