@@ -192,6 +192,21 @@
             color: #6b7280;
             margin-top: auto;
         }
+
+        .print-btn {
+            background: #ffffff;
+            color: #0056a6;
+            padding: 8px 15px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 2px;
+            transition: background 0.2s;
+        }
+
+        .print-btn:hover {
+            background: #e5e7eb;
+        }
     </style>
 </head>
 <body>
@@ -202,6 +217,13 @@
         </div>
         <div class="header-actions">
             <a href="index.jsp" class="back-btn">← Voltar</a>
+
+            <a href="${pageContext.request.contextPath}/gerarRelatorio.do?tipo=proprietarios"
+               class="print-btn"
+               target="_blank">
+                Imprimir Relatório
+            </a>
+
             <a href="proprietario.do?action=novo" class="new-btn">+ Novo Proprietário</a>
         </div>
     </div>
