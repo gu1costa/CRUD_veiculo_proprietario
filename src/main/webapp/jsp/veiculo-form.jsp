@@ -238,7 +238,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <%--<div class="form-group">
                     <label for="idProp">Proprietário *</label>
                     <select id="idProp" name="idProp" class="form-control" required>
                         <option value="">Selecione o proprietário</option>
@@ -249,7 +249,7 @@
                         </option>
                         <% } %>
                     </select>
-                </div>
+                </div>--%>
 
                 <% if (isEdicao) { %>
                 <div class="proprietario-info">
