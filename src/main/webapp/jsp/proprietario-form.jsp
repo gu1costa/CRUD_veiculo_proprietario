@@ -326,11 +326,20 @@
                         <strong>RENAVAM:</strong> <%= v.getRenavam() %>
                     </div>
                 </div>
-                <a href="veiculo.do?action=deletar&id=<%= v.getId() %>&idProp=<%= proprietario.getId() %>&origem=proprietario"
-                   class="btn btn-small btn-danger"
-                   onclick="return confirm('Tem certeza que deseja remover este veículo?')">
-                    🗑️ Remover
-                </a>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <a href="${pageContext.request.contextPath}/veiculo.do?action=editar&id=<%= v.getId() %>&origem=proprietario&idProp=<%= proprietario.getId() %>"
+                       class="btn btn-small btn-secondary">
+                        ✏️ Editar
+                    </a>
+
+
+                    <a href="veiculo.do?action=deletar&id=<%= v.getId() %>&idProp=<%= proprietario.getId() %>&origem=proprietario"
+                       class="btn btn-small btn-danger"
+                       onclick="return confirm('Tem certeza que deseja remover este veículo?')">
+                        🗑️ Remover
+                    </a>
+                </div>
+
 
             </div>
             <% } %>
@@ -355,7 +364,7 @@
                                name="placa"
                                class="form-control"
                                maxlength="7"
-                               placeholder="Ex: ABC1234"
+                               placeholder="Ex: ABC1D23"
                                style="text-transform: uppercase;"
                                required>
                     </div>
@@ -372,6 +381,9 @@
                 </div>
 
                 <button type="submit" class="btn">➕ Adicionar Veículo</button>
+                <button type="button" class="btn btn-secondary" id="btnCancelarEdicaoVeiculo" style="display:none; margin-left:10px;">
+                    Cancelar edição
+                </button>
             </form>
         </div>
     </div>

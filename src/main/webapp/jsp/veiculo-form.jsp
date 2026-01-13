@@ -2,16 +2,33 @@
 <%@ page import="br.com.detran.crud_veiculo_proprietario.model.Veiculo" %>
 <%@ page import="br.com.detran.crud_veiculo_proprietario.model.Proprietario" %>
 <%@ page import="java.util.List" %>
+
+<%
+    Veiculo veiculo = (Veiculo) request.getAttribute("veiculo");
+    boolean isEdicao = veiculo != null;
+
+    List<Proprietario> proprietarios = (List<Proprietario>) request.getAttribute("proprietarios");
+
+    String origem = request.getParameter("origem");
+    if (origem == null) origem = "veiculo";
+
+    String idPropParam = request.getParameter("idProp");
+    String idPropFinal = idPropParam != null ? idPropParam : (isEdicao ? String.valueOf(veiculo.getIdProp()) : "");
+
+    String backUrl;
+    if ("proprietario".equals(origem) && idPropFinal != null && !idPropFinal.isEmpty()) {
+        backUrl = "proprietario.do?action=editar&id=" + idPropFinal;
+    } else {
+        backUrl = "veiculo.do?action=listar";
+    }
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Cadastro de Veículo - DETRAN</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -37,16 +54,9 @@
             align-items: center;
         }
 
-        .logo h1 {
-            font-size: 24px;
-            font-weight: 600;
-        }
+        .logo h1 { font-size: 24px; font-weight: 600; }
 
-        .header-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
+        .header-actions { display: flex; gap: 15px; align-items: center; }
 
         .back-btn {
             color: white;
@@ -56,9 +66,7 @@
             transition: background 0.2s;
         }
 
-        .back-btn:hover {
-            background: rgba(255,255,255,0.1);
-        }
+        .back-btn:hover { background: rgba(255,255,255,0.1); }
 
         .main-content {
             max-width: 900px;
@@ -67,11 +75,7 @@
             flex: 1;
         }
 
-        .card {
-            background: white;
-            border: 1px solid #d1d5db;
-            margin-bottom: 30px;
-        }
+        .card { background: white; border: 1px solid #d1d5db; margin-bottom: 30px; }
 
         .card-header {
             background: #f9fafb;
@@ -85,9 +89,7 @@
             font-weight: 600;
         }
 
-        .card-body {
-            padding: 25px;
-        }
+        .card-body { padding: 25px; }
 
         .form-row {
             display: grid;
@@ -96,9 +98,7 @@
             margin-bottom: 20px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
 
         .form-group label {
             display: block;
@@ -115,14 +115,9 @@
             transition: border 0.2s;
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: #0056a6;
-        }
+        .form-control:focus { outline: none; border-color: #0056a6; }
 
-        select.form-control {
-            cursor: pointer;
-        }
+        select.form-control { cursor: pointer; }
 
         .btn {
             padding: 10px 25px;
@@ -136,9 +131,7 @@
             display: inline-block;
         }
 
-        .btn:hover {
-            background: #004494;
-        }
+        .btn:hover { background: #004494; }
 
         .btn-outline {
             background: white;
@@ -146,9 +139,7 @@
             border: 1px solid #0056a6;
         }
 
-        .btn-outline:hover {
-            background: #f0f7ff;
-        }
+        .btn-outline:hover { background: #f0f7ff; }
 
         .form-actions {
             display: flex;
@@ -162,12 +153,6 @@
             padding: 15px;
             margin-bottom: 20px;
             border: 1px solid transparent;
-        }
-
-        .alert-info {
-            background: #dbeafe;
-            border-color: #3b82f6;
-            color: #1e40af;
         }
 
         .alert-warning {
@@ -184,9 +169,7 @@
             margin-top: 10px;
         }
 
-        .proprietario-info strong {
-            color: #0056a6;
-        }
+        .proprietario-info strong { color: #0056a6; }
 
         .footer {
             background: #f8f9fa;
@@ -205,17 +188,12 @@
             <h1>Cadastro de Veículo</h1>
         </div>
         <div class="header-actions">
-            <a href="veiculo.do?action=listar" class="back-btn">← Voltar para Lista</a>
+            <a href="<%= backUrl %>" class="back-btn">← Voltar</a>
         </div>
     </div>
 </div>
 
 <div class="main-content">
-    <%
-        Veiculo veiculo = (Veiculo) request.getAttribute("veiculo");
-        List<Proprietario> proprietarios = (List<Proprietario>) request.getAttribute("proprietarios");
-        boolean isEdicao = veiculo != null;
-    %>
 
     <% if (proprietarios == null || proprietarios.isEmpty()) { %>
     <div class="alert alert-warning">
@@ -228,9 +206,16 @@
         <div class="card-header">
             <h2><%= isEdicao ? "Editar Veículo" : "Novo Veículo" %></h2>
         </div>
+
         <div class="card-body">
-            <form method="post" action="veiculo">
-                <input type="hidden" name="origem" value="veiculo">
+            <form method="post" action="veiculo.do">
+                <input type="hidden" name="action" value="salvar">
+                <input type="hidden" name="origem" value="<%= origem %>">
+
+                <%-- garante que, vindo do proprietário, o salvar vai voltar certo --%>
+                <% if (idPropFinal != null && !idPropFinal.isEmpty()) { %>
+                <input type="hidden" name="idProp" value="<%= idPropFinal %>">
+                <% } %>
 
                 <% if (isEdicao) { %>
                 <input type="hidden" name="id" value="<%= veiculo.getId() %>">
@@ -238,22 +223,18 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="placa">Placa * (sem formatação)</label>
+                        <label for="placa">Placa *</label>
                         <input type="text" id="placa" name="placa" class="form-control"
                                value="<%= isEdicao ? veiculo.getPlaca() : "" %>"
-                               maxlength="7" placeholder="ABC1234" required
-                               pattern="[A-Za-z]{3}[0-9]{4}"
-                               title="Digite 3 letras seguidas de 4 números. Ex: ABC1234"
+                               maxlength="7" placeholder="ABC1D23" required
                                style="text-transform: uppercase;">
                     </div>
 
                     <div class="form-group">
-                        <label for="renavam">RENAVAM * (somente números)</label>
+                        <label for="renavam">RENAVAM *</label>
                         <input type="text" id="renavam" name="renavam" class="form-control"
                                value="<%= isEdicao ? veiculo.getRenavam() : "" %>"
-                               maxlength="11" placeholder="00000000000" required
-                               pattern="\d{11}"
-                               title="Digite 11 dígitos numéricos">
+                               maxlength="11" placeholder="00000000000" required>
                     </div>
                 </div>
 
@@ -272,7 +253,7 @@
 
                 <% if (isEdicao) { %>
                 <div class="proprietario-info">
-                    <strong>Proprietário Atual:</strong><br>
+                    <%--<strong>Proprietário Atual:</strong><br>--%>
                     <strong>Nome:</strong> <%= veiculo.getProprietarioNome() %><br>
                     <strong>CPF/CNPJ:</strong> <%= veiculo.getProprietarioCpfCnpj() %><br>
                     <strong>Endereço:</strong> <%= veiculo.getProprietarioEndereco() %>
@@ -283,7 +264,8 @@
                     <button type="submit" class="btn">
                         <%= isEdicao ? "Salvar Alterações" : "Cadastrar Veículo" %>
                     </button>
-                    <a href="veiculo.do?action=listar" class="btn btn-outline">Cancelar</a>
+
+                    <a href="<%= backUrl %>" class="btn btn-outline">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -297,16 +279,12 @@
 </div>
 
 <script>
-    // Campo RENAVAM: permite apenas números
     document.getElementById('renavam')?.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        e.target.value = value;
+        e.target.value = e.target.value.replace(/\D/g, '');
     });
 
-    // Campo Placa: converte para maiúsculas e remove caracteres especiais
     document.getElementById('placa')?.addEventListener('input', function(e) {
-        let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-        e.target.value = value;
+        e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
     });
 </script>
 </body>
