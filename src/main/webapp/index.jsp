@@ -162,7 +162,7 @@
 </div>
 
 <div class="footer">
-    <p>Sistema DETRAN - Versão 1.0 | © 2025 Departamento Estadual de Trânsito</p>
+    <p>Sistema DETRAN - Versão 1.0 | © 2026 Departamento Estadual de Trânsito</p>
 </div>
 </body>
 </html>
