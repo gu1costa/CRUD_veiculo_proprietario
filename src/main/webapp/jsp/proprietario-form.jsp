@@ -3,6 +3,7 @@
 <%@ page import="br.com.detran.crud_veiculo_proprietario.model.Veiculo" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.apache.struts.Globals" %>
+<%@ page import="org.apache.struts.action.ActionErrors" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
 <!DOCTYPE html>
@@ -249,17 +250,47 @@
     </style>
 </head>
 <body>
+
+<%
+    Proprietario proprietario = (Proprietario) request.getAttribute("proprietario");
+    boolean isEdicao = proprietario != null && proprietario.getId() > 0;
+
+    // pega erros do Struts (saveErrors)
+    ActionErrors errs = (ActionErrors) request.getAttribute(Globals.ERROR_KEY);
+
+    boolean hasPropErrors = false;
+    boolean hasVeiculoErrors = false;
+
+    if (errs != null && !errs.isEmpty()) {
+        java.util.Iterator it;
+
+        it = errs.get("cpfCnpj");
+        if (it != null && it.hasNext()) hasPropErrors = true;
+
+        it = errs.get("nome");
+        if (it != null && it.hasNext()) hasPropErrors = true;
+
+        it = errs.get("endereco");
+        if (it != null && it.hasNext()) hasPropErrors = true;
+
+        it = errs.get("placa");
+        if (it != null && it.hasNext()) hasVeiculoErrors = true;
+
+        it = errs.get("renavam");
+        if (it != null && it.hasNext()) hasVeiculoErrors = true;
+
+        it = errs.get("idProp");
+        if (it != null && it.hasNext()) hasVeiculoErrors = true;
+    }
+
+    // valores temporários (para manter o que digitou quando falhar)
+    String placaTemp = (String) request.getAttribute("placaTemp");
+    String renavamTemp = (String) request.getAttribute("renavamTemp");
+%>
+
 <div class="header">
     <div class="header-content">
         <div class="logo">
-            <%
-                Proprietario proprietario = (Proprietario) request.getAttribute("proprietario");
-                boolean isEdicao = proprietario != null && proprietario.getId() > 0;
-
-                String cpfValue = proprietario != null && proprietario.getCpfCnpj() != null ? proprietario.getCpfCnpj() : "";
-                String nomeValue = proprietario != null && proprietario.getNome() != null ? proprietario.getNome() : "";
-                String enderecoValue = proprietario != null && proprietario.getEndereco() != null ? proprietario.getEndereco() : "";
-            %>
             <h1><%= isEdicao ? "Editar Proprietário" : "Novo Proprietário" %></h1>
         </div>
         <a href="proprietario.do?action=listar" class="back-btn">← Voltar para Lista</a>
@@ -272,9 +303,12 @@
     <div class="card">
         <h3 class="card-title">Informações do Proprietário</h3>
 
-        <% if (request.getAttribute(Globals.ERROR_KEY) != null) { %>
+        <%-- ✅ ERROS SOMENTE DO PROPRIETÁRIO (não duplica mais) --%>
+        <% if (hasPropErrors) { %>
         <div class="alert alert-error">
-            <html:errors/>
+            <html:errors property="cpfCnpj"/>
+            <html:errors property="nome"/>
+            <html:errors property="endereco"/>
         </div>
         <% } %>
 
@@ -289,10 +323,9 @@
                 <input type="text"
                        name="cpfCnpj"
                        class="form-control"
-                       value="<%= cpfValue %>"
+                       value="<%= proprietario != null ? proprietario.getCpfCnpj() : "" %>"
                        placeholder="Digite apenas números (11 dígitos para CPF ou 14 para CNPJ)"
                        maxlength="14"
-                       pattern="[0-9]{11}([0-9]{3})?"
                        required>
             </div>
 
@@ -301,7 +334,7 @@
                 <input type="text"
                        name="nome"
                        class="form-control"
-                       value="<%= nomeValue %>"
+                       value="<%= proprietario != null ? proprietario.getNome() : "" %>"
                        placeholder="Digite o nome completo do proprietário"
                        maxlength="100"
                        required>
@@ -312,7 +345,7 @@
                 <input type="text"
                        name="endereco"
                        class="form-control"
-                       value="<%= enderecoValue %>"
+                       value="<%= proprietario != null ? proprietario.getEndereco() : "" %>"
                        placeholder="Rua, número, bairro, cidade - UF"
                        required>
             </div>
@@ -338,6 +371,8 @@
         <div class="alert alert-success">✅ Veículo adicionado com sucesso!</div>
         <% } else if ("veiculo_deletado".equals(msg)) { %>
         <div class="alert alert-success">✅ Veículo removido com sucesso!</div>
+        <% } else if ("veiculo_atualizado".equals(msg)) { %>
+        <div class="alert alert-success">✅ Veículo atualizado com sucesso!</div>
         <% } %>
 
         <% if (veiculos != null && !veiculos.isEmpty()) { %>
@@ -374,19 +409,14 @@
         <div class="add-vehicle-form">
             <h3 style="margin-bottom: 20px; color: #2d3748;">➕ Adicionar Novo Veículo</h3>
 
-            <%
-                String placaTemp = (String) request.getAttribute("placaTemp");
-                String renavamTemp = (String) request.getAttribute("renavamTemp");
-            %>
-
-            <% if (request.getAttribute(Globals.ERROR_KEY) != null) { %>
-            <div class="alert alert-warning">
+            <%-- ✅ ERROS SOMENTE DO VEÍCULO (não duplica mais) --%>
+            <% if (hasVeiculoErrors) { %>
+            <div class="alert alert-error">
                 <html:errors property="placa"/>
                 <html:errors property="renavam"/>
                 <html:errors property="idProp"/>
             </div>
             <% } %>
-
 
             <form method="post" action="${pageContext.request.contextPath}/veiculo.do">
                 <input type="hidden" name="action" value="salvar">
@@ -405,7 +435,6 @@
                                placeholder="Ex: ABC1D23"
                                style="text-transform: uppercase;"
                                required>
-
                     </div>
 
                     <div class="form-group">
@@ -418,7 +447,6 @@
                                value="<%= renavamTemp != null ? renavamTemp : "" %>"
                                placeholder="Ex: 12345678901"
                                required>
-
                     </div>
                 </div>
 
@@ -438,16 +466,22 @@
 </div>
 
 <script>
+    // Formata CPF/CNPJ para aceitar apenas números
     document.querySelector('input[name="cpfCnpj"]')?.addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/\D/g, '');
+        let value = e.target.value.replace(/\D/g, '');
+        e.target.value = value;
     });
 
+    // Formata placa para maiúsculas e alfanumérico
     document.querySelector('input[name="placa"]')?.addEventListener('input', function(e) {
-        e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        e.target.value = value;
     });
 
+    // Formata RENAVAM para aceitar apenas números
     document.querySelector('input[name="renavam"]')?.addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/\D/g, '');
+        let value = e.target.value.replace(/\D/g, '');
+        e.target.value = value;
     });
 </script>
 </body>
