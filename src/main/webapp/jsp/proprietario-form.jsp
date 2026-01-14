@@ -11,11 +11,7 @@
 <head>
     <title>Proprietário - DETRAN</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -41,10 +37,7 @@
             align-items: center;
         }
 
-        .logo h1 {
-            font-size: 24px;
-            font-weight: 600;
-        }
+        .logo h1 { font-size: 24px; font-weight: 600; }
 
         .back-btn {
             color: white;
@@ -55,9 +48,7 @@
             gap: 5px;
         }
 
-        .back-btn:hover {
-            text-decoration: underline;
-        }
+        .back-btn:hover { text-decoration: underline; }
 
         .main-content {
             max-width: 1200px;
@@ -91,9 +82,7 @@
             border-bottom: 1px solid #e5e7eb;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
 
         .form-group label {
             display: block;
@@ -130,25 +119,13 @@
             display: inline-block;
         }
 
-        .btn:hover {
-            background: #004494;
-        }
+        .btn:hover { background: #004494; }
 
-        .btn-secondary {
-            background: #718096;
-        }
+        .btn-secondary { background: #718096; }
+        .btn-secondary:hover { background: #5a6777; }
 
-        .btn-secondary:hover {
-            background: #5a6777;
-        }
-
-        .btn-danger {
-            background: #e53e3e;
-        }
-
-        .btn-danger:hover {
-            background: #c53030;
-        }
+        .btn-danger { background: #e53e3e; }
+        .btn-danger:hover { background: #c53030; }
 
         .btn-small {
             padding: 8px 15px;
@@ -179,17 +156,11 @@
             border: 1px solid #ef4444;
         }
 
-        .alert-error ul {
-            margin-left: 18px;
-        }
+        .alert-error ul { margin-left: 18px; }
 
-        .vehicle-section {
-            margin-top: 40px;
-        }
+        .vehicle-section { margin-top: 40px; }
 
-        .vehicle-list {
-            margin-top: 20px;
-        }
+        .vehicle-list { margin-top: 20px; }
 
         .vehicle-card {
             background: #f7fafc;
@@ -202,9 +173,7 @@
             align-items: center;
         }
 
-        .vehicle-info {
-            flex: 1;
-        }
+        .vehicle-info { flex: 1; }
 
         .vehicle-info h3 {
             color: #2d3748;
@@ -212,9 +181,7 @@
             font-size: 18px;
         }
 
-        .vehicle-details {
-            color: #718096;
-        }
+        .vehicle-details { color: #718096; }
 
         .add-vehicle-form {
             background: #edf2f7;
@@ -244,9 +211,7 @@
             margin-top: auto;
         }
 
-        .required {
-            color: #e53e3e;
-        }
+        .required { color: #e53e3e; }
     </style>
 </head>
 <body>
@@ -254,11 +219,9 @@
 <%
     Proprietario proprietario = (Proprietario) request.getAttribute("proprietario");
 
-    // ✅ CORREÇÃO: evita NullPointer quando proprietario.getId() é null (Integer)
     Integer proprietarioId = (proprietario != null ? proprietario.getId() : null);
     boolean isEdicao = (proprietarioId != null && proprietarioId.intValue() > 0);
 
-    // pega erros do Struts (saveErrors)
     ActionErrors errs = (ActionErrors) request.getAttribute(Globals.ERROR_KEY);
 
     boolean hasPropErrors = false;
@@ -286,9 +249,10 @@
         if (it != null && it.hasNext()) hasVeiculoErrors = true;
     }
 
-    // valores temporários (para manter o que digitou quando falhar)
     String placaTemp = (String) request.getAttribute("placaTemp");
     String renavamTemp = (String) request.getAttribute("renavamTemp");
+
+    String mensagem = (String) request.getAttribute("mensagem");
 %>
 
 <div class="header">
@@ -303,10 +267,17 @@
 <div class="main-content">
     <h2 class="page-title"><%= isEdicao ? "Atualizar Dados do Proprietário" : "Cadastrar Novo Proprietário" %></h2>
 
+    <%-- ✅ Mensagem de sucesso vinda do Action --%>
+    <% if (mensagem != null && !mensagem.trim().isEmpty()) { %>
+    <div class="alert alert-success">
+        ✅ <%= mensagem %>
+    </div>
+    <% } %>
+
     <div class="card">
         <h3 class="card-title">Informações do Proprietário</h3>
 
-        <%-- ✅ ERROS SOMENTE DO PROPRIETÁRIO (não duplica mais) --%>
+        <%-- ✅ Erros apenas do proprietário --%>
         <% if (hasPropErrors) { %>
         <div class="alert alert-error">
             <html:errors property="cpfCnpj"/>
@@ -388,6 +359,7 @@
                         <strong>RENAVAM:</strong> <%= v.getRenavam() %>
                     </div>
                 </div>
+
                 <div style="display:flex; gap:10px; align-items:center;">
                     <a href="${pageContext.request.contextPath}/veiculo.do?action=editar&id=<%= v.getId() %>&origem=proprietario&idProp=<%= proprietarioId %>"
                        class="btn btn-small btn-secondary">
@@ -412,7 +384,7 @@
         <div class="add-vehicle-form">
             <h3 style="margin-bottom: 20px; color: #2d3748;">➕ Adicionar Novo Veículo</h3>
 
-            <%-- ✅ ERROS SOMENTE DO VEÍCULO (não duplica mais) --%>
+            <%-- ✅ Erros apenas do veículo (no card de adicionar) --%>
             <% if (hasVeiculoErrors) { %>
             <div class="alert alert-error">
                 <html:errors property="placa"/>
@@ -469,23 +441,18 @@
 </div>
 
 <script>
-    // Formata CPF/CNPJ para aceitar apenas números
     document.querySelector('input[name="cpfCnpj"]')?.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        e.target.value = value;
+        e.target.value = e.target.value.replace(/\D/g, '');
     });
 
-    // Formata placa para maiúsculas e alfanumérico
     document.querySelector('input[name="placa"]')?.addEventListener('input', function(e) {
-        let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-        e.target.value = value;
+        e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
     });
 
-    // Formata RENAVAM para aceitar apenas números
     document.querySelector('input[name="renavam"]')?.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        e.target.value = value;
+        e.target.value = e.target.value.replace(/\D/g, '');
     });
 </script>
+
 </body>
 </html>
