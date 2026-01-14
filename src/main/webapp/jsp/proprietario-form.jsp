@@ -253,7 +253,10 @@
 
 <%
     Proprietario proprietario = (Proprietario) request.getAttribute("proprietario");
-    boolean isEdicao = proprietario != null && proprietario.getId() > 0;
+
+    // ✅ CORREÇÃO: evita NullPointer quando proprietario.getId() é null (Integer)
+    Integer proprietarioId = (proprietario != null ? proprietario.getId() : null);
+    boolean isEdicao = (proprietarioId != null && proprietarioId.intValue() > 0);
 
     // pega erros do Struts (saveErrors)
     ActionErrors errs = (ActionErrors) request.getAttribute(Globals.ERROR_KEY);
@@ -315,7 +318,7 @@
         <form method="post" action="proprietario.do">
             <input type="hidden" name="action" value="salvar">
             <% if (isEdicao) { %>
-            <input type="hidden" name="id" value="<%= proprietario.getId() %>">
+            <input type="hidden" name="id" value="<%= proprietarioId %>">
             <% } %>
 
             <div class="form-group">
@@ -386,12 +389,12 @@
                     </div>
                 </div>
                 <div style="display:flex; gap:10px; align-items:center;">
-                    <a href="${pageContext.request.contextPath}/veiculo.do?action=editar&id=<%= v.getId() %>&origem=proprietario&idProp=<%= proprietario.getId() %>"
+                    <a href="${pageContext.request.contextPath}/veiculo.do?action=editar&id=<%= v.getId() %>&origem=proprietario&idProp=<%= proprietarioId %>"
                        class="btn btn-small btn-secondary">
                         ✏️ Editar
                     </a>
 
-                    <a href="veiculo.do?action=deletar&id=<%= v.getId() %>&idProp=<%= proprietario.getId() %>&origem=proprietario"
+                    <a href="veiculo.do?action=deletar&id=<%= v.getId() %>&idProp=<%= proprietarioId %>&origem=proprietario"
                        class="btn btn-small btn-danger"
                        onclick="return confirm('Tem certeza que deseja remover este veículo?')">
                         🗑️ Remover
@@ -421,7 +424,7 @@
             <form method="post" action="${pageContext.request.contextPath}/veiculo.do">
                 <input type="hidden" name="action" value="salvar">
                 <input type="hidden" name="origem" value="proprietario">
-                <input type="hidden" name="idProp" value="<%= proprietario.getId() %>">
+                <input type="hidden" name="idProp" value="<%= proprietarioId %>">
 
                 <div class="form-row">
                     <div class="form-group">
