@@ -2,6 +2,9 @@
 <%@ page import="br.com.detran.crud_veiculo_proprietario.model.Proprietario" %>
 <%@ page import="br.com.detran.crud_veiculo_proprietario.model.Veiculo" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.apache.struts.Globals" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -169,6 +172,16 @@
             border: 1px solid #10b981;
         }
 
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .alert-error ul {
+            margin-left: 18px;
+        }
+
         .vehicle-section {
             margin-top: 40px;
         }
@@ -241,7 +254,11 @@
         <div class="logo">
             <%
                 Proprietario proprietario = (Proprietario) request.getAttribute("proprietario");
-                boolean isEdicao = proprietario != null;
+                boolean isEdicao = proprietario != null && proprietario.getId() > 0;
+
+                String cpfValue = proprietario != null && proprietario.getCpfCnpj() != null ? proprietario.getCpfCnpj() : "";
+                String nomeValue = proprietario != null && proprietario.getNome() != null ? proprietario.getNome() : "";
+                String enderecoValue = proprietario != null && proprietario.getEndereco() != null ? proprietario.getEndereco() : "";
             %>
             <h1><%= isEdicao ? "Editar Proprietário" : "Novo Proprietário" %></h1>
         </div>
@@ -255,6 +272,12 @@
     <div class="card">
         <h3 class="card-title">Informações do Proprietário</h3>
 
+        <% if (request.getAttribute(Globals.ERROR_KEY) != null) { %>
+        <div class="alert alert-error">
+            <html:errors/>
+        </div>
+        <% } %>
+
         <form method="post" action="proprietario.do">
             <input type="hidden" name="action" value="salvar">
             <% if (isEdicao) { %>
@@ -266,9 +289,10 @@
                 <input type="text"
                        name="cpfCnpj"
                        class="form-control"
-                       value="<%= isEdicao ? proprietario.getCpfCnpj() : "" %>"
+                       value="<%= cpfValue %>"
                        placeholder="Digite apenas números (11 dígitos para CPF ou 14 para CNPJ)"
                        maxlength="14"
+                       pattern="[0-9]{11}([0-9]{3})?"
                        required>
             </div>
 
@@ -277,7 +301,7 @@
                 <input type="text"
                        name="nome"
                        class="form-control"
-                       value="<%= isEdicao ? proprietario.getNome() : "" %>"
+                       value="<%= nomeValue %>"
                        placeholder="Digite o nome completo do proprietário"
                        maxlength="100"
                        required>
@@ -288,7 +312,7 @@
                 <input type="text"
                        name="endereco"
                        class="form-control"
-                       value="<%= isEdicao ? proprietario.getEndereco() : "" %>"
+                       value="<%= enderecoValue %>"
                        placeholder="Rua, número, bairro, cidade - UF"
                        required>
             </div>
@@ -332,15 +356,12 @@
                         ✏️ Editar
                     </a>
 
-
                     <a href="veiculo.do?action=deletar&id=<%= v.getId() %>&idProp=<%= proprietario.getId() %>&origem=proprietario"
                        class="btn btn-small btn-danger"
                        onclick="return confirm('Tem certeza que deseja remover este veículo?')">
                         🗑️ Remover
                     </a>
                 </div>
-
-
             </div>
             <% } %>
         </div>
@@ -352,6 +373,21 @@
 
         <div class="add-vehicle-form">
             <h3 style="margin-bottom: 20px; color: #2d3748;">➕ Adicionar Novo Veículo</h3>
+
+            <%
+                String placaTemp = (String) request.getAttribute("placaTemp");
+                String renavamTemp = (String) request.getAttribute("renavamTemp");
+            %>
+
+            <% if (request.getAttribute(Globals.ERROR_KEY) != null) { %>
+            <div class="alert alert-warning">
+                <html:errors property="placa"/>
+                <html:errors property="renavam"/>
+                <html:errors property="idProp"/>
+            </div>
+            <% } %>
+
+
             <form method="post" action="${pageContext.request.contextPath}/veiculo.do">
                 <input type="hidden" name="action" value="salvar">
                 <input type="hidden" name="origem" value="proprietario">
@@ -364,9 +400,12 @@
                                name="placa"
                                class="form-control"
                                maxlength="7"
+                               minlength="7"
+                               value="<%= placaTemp != null ? placaTemp : "" %>"
                                placeholder="Ex: ABC1D23"
                                style="text-transform: uppercase;"
                                required>
+
                     </div>
 
                     <div class="form-group">
@@ -375,8 +414,11 @@
                                name="renavam"
                                class="form-control"
                                maxlength="11"
+                               minlength="11"
+                               value="<%= renavamTemp != null ? renavamTemp : "" %>"
                                placeholder="Ex: 12345678901"
                                required>
+
                     </div>
                 </div>
 
@@ -396,22 +438,16 @@
 </div>
 
 <script>
-    // Formata CPF/CNPJ para aceitar apenas números
     document.querySelector('input[name="cpfCnpj"]')?.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        e.target.value = value;
+        e.target.value = e.target.value.replace(/\D/g, '');
     });
 
-    // Formata placa para maiúsculas
     document.querySelector('input[name="placa"]')?.addEventListener('input', function(e) {
-        let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-        e.target.value = value;
+        e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
     });
 
-    // Formata RENAVAM para aceitar apenas números
     document.querySelector('input[name="renavam"]')?.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        e.target.value = value;
+        e.target.value = e.target.value.replace(/\D/g, '');
     });
 </script>
 </body>

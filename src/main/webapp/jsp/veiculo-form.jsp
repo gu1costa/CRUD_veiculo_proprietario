@@ -2,6 +2,8 @@
 <%@ page import="br.com.detran.crud_veiculo_proprietario.model.Veiculo" %>
 <%@ page import="br.com.detran.crud_veiculo_proprietario.model.Proprietario" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.apache.struts.Globals" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
 <%
     Veiculo veiculo = (Veiculo) request.getAttribute("veiculo");
@@ -21,6 +23,9 @@
     } else {
         backUrl = "veiculo.do?action=listar";
     }
+
+    String placaTemp = (String) request.getAttribute("placaTemp");
+    String renavamTemp = (String) request.getAttribute("renavamTemp");
 %>
 
 <!DOCTYPE html>
@@ -161,6 +166,14 @@
             color: #92400e;
         }
 
+        .alert-error {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .alert-error ul { margin-left: 18px; }
+
         .proprietario-info {
             background: #f0f7ff;
             padding: 15px;
@@ -208,11 +221,17 @@
         </div>
 
         <div class="card-body">
+
+            <% if (request.getAttribute(Globals.ERROR_KEY) != null) { %>
+            <div class="alert alert-error">
+                <html:errors/>
+            </div>
+            <% } %>
+
             <form method="post" action="veiculo.do">
                 <input type="hidden" name="action" value="salvar">
                 <input type="hidden" name="origem" value="<%= origem %>">
 
-                <%-- garante que, vindo do proprietário, o salvar vai voltar certo --%>
                 <% if (idPropFinal != null && !idPropFinal.isEmpty()) { %>
                 <input type="hidden" name="idProp" value="<%= idPropFinal %>">
                 <% } %>
@@ -225,35 +244,27 @@
                     <div class="form-group">
                         <label for="placa">Placa *</label>
                         <input type="text" id="placa" name="placa" class="form-control"
-                               value="<%= isEdicao ? veiculo.getPlaca() : "" %>"
-                               maxlength="7" placeholder="ABC1D23" required
+                               value="<%= isEdicao ? veiculo.getPlaca() : (placaTemp != null ? placaTemp : "") %>"
+                               maxlength="7"
+                               minlength="7"
+                               placeholder="ABC1D23"
+                               required
                                style="text-transform: uppercase;">
                     </div>
 
                     <div class="form-group">
                         <label for="renavam">RENAVAM *</label>
                         <input type="text" id="renavam" name="renavam" class="form-control"
-                               value="<%= isEdicao ? veiculo.getRenavam() : "" %>"
-                               maxlength="11" placeholder="00000000000" required>
+                               value="<%= isEdicao ? veiculo.getRenavam() : (renavamTemp != null ? renavamTemp : "") %>"
+                               maxlength="11"
+                               minlength="11"
+                               placeholder="00000000000"
+                               required>
                     </div>
                 </div>
 
-                <%--<div class="form-group">
-                    <label for="idProp">Proprietário *</label>
-                    <select id="idProp" name="idProp" class="form-control" required>
-                        <option value="">Selecione o proprietário</option>
-                        <% for (Proprietario p : proprietarios) { %>
-                        <option value="<%= p.getId() %>"
-                                <%= (isEdicao && veiculo.getIdProp().equals(p.getId())) ? "selected" : "" %>>
-                            <%= p.getNome() %> - CPF/CNPJ: <%= p.getCpfCnpj() %>
-                        </option>
-                        <% } %>
-                    </select>
-                </div>--%>
-
                 <% if (isEdicao) { %>
                 <div class="proprietario-info">
-                    <%--<strong>Proprietário Atual:</strong><br>--%>
                     <strong>Nome:</strong> <%= veiculo.getProprietarioNome() %><br>
                     <strong>CPF/CNPJ:</strong> <%= veiculo.getProprietarioCpfCnpj() %><br>
                     <strong>Endereço:</strong> <%= veiculo.getProprietarioEndereco() %>

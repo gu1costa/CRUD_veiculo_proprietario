@@ -22,23 +22,48 @@ public class VeiculoForm extends ActionForm {
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         ActionErrors errors = new ActionErrors();
 
-        if (placa == null || placa.trim().isEmpty()) {
+        String placaNorm = onlyAlphaNumUpper(placa);
+        this.placa = placaNorm;
+
+        if (placaNorm.isEmpty()) {
             errors.add("placa", new ActionMessage("error.placa.required"));
-        } else if (placa.length() != 7) {
+        } else if (!isPlacaValida(placaNorm)) {
             errors.add("placa", new ActionMessage("error.placa.invalid"));
         }
 
-        if (renavam == null || renavam.trim().isEmpty()) {
+        String renavamNorm = onlyDigits(renavam);
+        this.renavam = renavamNorm;
+
+        if (renavamNorm.isEmpty()) {
             errors.add("renavam", new ActionMessage("error.renavam.required"));
-        } else if (renavam.length() != 11) {
+        } else if (!renavamNorm.matches("^\\d{11}$")) {
             errors.add("renavam", new ActionMessage("error.renavam.invalid"));
         }
 
-        if (idProp == null || idProp.trim().isEmpty()) {
+        String idPropNorm = onlyDigits(idProp);
+        this.idProp = idPropNorm;
+
+        if (idPropNorm.isEmpty()) {
             errors.add("idProp", new ActionMessage("error.proprietario.required"));
         }
 
         return errors;
+    }
+
+    private boolean isPlacaValida(String p) {
+        // Antiga: ABC1234
+        // Mercosul: ABC1D23
+        return p.matches("^[A-Z]{3}\\d{4}$") || p.matches("^[A-Z]{3}\\d[A-Z]\\d{2}$");
+    }
+
+    private String onlyDigits(String s) {
+        if (s == null) return "";
+        return s.replaceAll("\\D", "");
+    }
+
+    private String onlyAlphaNumUpper(String s) {
+        if (s == null) return "";
+        return s.toUpperCase().replaceAll("[^A-Z0-9]", "");
     }
 
     @Override
@@ -50,44 +75,18 @@ public class VeiculoForm extends ActionForm {
         this.origem = null;
     }
 
-    // Getters e Setters
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getPlaca() { return placa; }
+    public void setPlaca(String placa) { this.placa = placa; }
 
-    public String getPlaca() {
-        return placa;
-    }
+    public String getRenavam() { return renavam; }
+    public void setRenavam(String renavam) { this.renavam = renavam; }
 
-    public void setPlaca(String placa) {
-        this.placa = placa;
-    }
+    public String getIdProp() { return idProp; }
+    public void setIdProp(String idProp) { this.idProp = idProp; }
 
-    public String getRenavam() {
-        return renavam;
-    }
-
-    public void setRenavam(String renavam) {
-        this.renavam = renavam;
-    }
-
-    public String getIdProp() {
-        return idProp;
-    }
-
-    public void setIdProp(String idProp) {
-        this.idProp = idProp;
-    }
-
-    public String getOrigem() {
-        return origem;
-    }
-
-    public void setOrigem(String origem) {
-        this.origem = origem;
-    }
+    public String getOrigem() { return origem; }
+    public void setOrigem(String origem) { this.origem = origem; }
 }

@@ -7,6 +7,7 @@ import br.com.detran.crud_veiculo_proprietario.model.Proprietario;
 import br.com.detran.crud_veiculo_proprietario.model.Veiculo;
 
 import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -65,13 +66,35 @@ public class ProprietarioAction extends Action {
     private ActionForward salvar(ActionMapping mapping, ActionForm form, HttpServletRequest request) {
         ProprietarioForm proprietarioForm = (ProprietarioForm) form;
 
+        ActionErrors errors = proprietarioForm.validate(mapping, request);
+        if (errors != null && !errors.isEmpty()) {
+            saveErrors(request, errors);
+
+            Proprietario p = new Proprietario();
+            String idStr = proprietarioForm.getId();
+
+            if (idStr != null && !idStr.trim().isEmpty()) {
+                int id = Integer.parseInt(idStr);
+                p.setId(id);
+                request.setAttribute("veiculos", veiculoDAO.buscarPorProprietario(id));
+            }
+
+            p.setCpfCnpj(proprietarioForm.getCpfCnpj());
+            p.setNome(proprietarioForm.getNome());
+            p.setEndereco(proprietarioForm.getEndereco());
+
+            request.setAttribute("proprietario", p);
+
+            return mapping.findForward("form");
+        }
+
         Proprietario proprietario = new Proprietario();
         proprietario.setCpfCnpj(proprietarioForm.getCpfCnpj());
         proprietario.setNome(proprietarioForm.getNome());
         proprietario.setEndereco(proprietarioForm.getEndereco());
 
         String idStr = proprietarioForm.getId();
-        if (idStr != null && !idStr.isEmpty()) {
+        if (idStr != null && !idStr.trim().isEmpty()) {
             proprietario.setId(Integer.parseInt(idStr));
             proprietarioDAO.atualizar(proprietario);
             request.setAttribute("mensagem", "Proprietário atualizado com sucesso!");

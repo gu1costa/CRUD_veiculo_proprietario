@@ -1,7 +1,7 @@
 package br.com.detran.crud_veiculo_proprietario.form;
 
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 
@@ -21,9 +21,12 @@ public class ProprietarioForm extends ActionForm {
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         ActionErrors errors = new ActionErrors();
 
-        if (cpfCnpj == null || cpfCnpj.trim().isEmpty()) {
+        String doc = onlyDigits(cpfCnpj);
+        this.cpfCnpj = doc;
+
+        if (doc.isEmpty()) {
             errors.add("cpfCnpj", new ActionMessage("error.cpfCnpj.required"));
-        } else if (cpfCnpj.length() != 11 && cpfCnpj.length() != 14) {
+        } else if (doc.length() != 11 && doc.length() != 14) {
             errors.add("cpfCnpj", new ActionMessage("error.cpfCnpj.invalid"));
         }
 
@@ -48,7 +51,11 @@ public class ProprietarioForm extends ActionForm {
         this.endereco = null;
     }
 
-    // Getters e Setters
+    private String onlyDigits(String s) {
+        if (s == null) return "";
+        return s.replaceAll("\\D", "");
+    }
+
     public String getId() {
         return id;
     }
