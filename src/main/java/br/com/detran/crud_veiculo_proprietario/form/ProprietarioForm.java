@@ -1,5 +1,6 @@
 package br.com.detran.crud_veiculo_proprietario.form;
 
+import br.com.detran.crud_veiculo_proprietario.util.CpfCnpjValidator;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
@@ -26,7 +27,7 @@ public class ProprietarioForm extends ActionForm {
 
         if (doc.isEmpty()) {
             errors.add("cpfCnpj", new ActionMessage("error.cpfCnpj.required"));
-        } else if (doc.length() != 11 && doc.length() != 14) {
+        } else if (!CpfCnpjValidator.isValidCpfOrCnpj(doc)) {
             errors.add("cpfCnpj", new ActionMessage("error.cpfCnpj.invalid"));
         }
 

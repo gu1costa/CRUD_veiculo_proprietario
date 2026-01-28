@@ -2,6 +2,7 @@ package br.com.detran.crud_veiculo_proprietario.action;
 
 import br.com.detran.crud_veiculo_proprietario.dao.VeiculoDAO;
 import br.com.detran.crud_veiculo_proprietario.model.Veiculo;
+import br.com.detran.crud_veiculo_proprietario.util.CpfCnpjValidator;
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -28,14 +29,29 @@ public class BuscaAction extends Action {
                 Veiculo veiculo = veiculoDAO.buscarPorPlaca(valor.trim());
                 request.setAttribute("veiculo", veiculo);
                 request.setAttribute("tipoBusca", "placa");
+                request.setAttribute("valorBusca", valor);
             } else if ("cpf".equals(tipo)) {
-                List<Veiculo> veiculos = veiculoDAO.buscarPorCpfCnpj(valor.trim());
+                String doc = onlyDigits(valor.trim());
+
+                if (!CpfCnpjValidator.isValidCpfOrCnpj(doc)) {
+                    request.setAttribute("erroBusca", "CPF / CNPJ inválido");
+                    request.setAttribute("tipoBusca", "cpf");
+                    request.setAttribute("valorBusca", valor);
+                    return mapping.findForward("busca");
+                }
+
+                List<Veiculo> veiculos = veiculoDAO.buscarPorCpfCnpj(doc);
                 request.setAttribute("veiculos", veiculos);
                 request.setAttribute("tipoBusca", "cpf");
+                request.setAttribute("valorBusca", valor);
             }
-            request.setAttribute("valorBusca", valor);
         }
 
         return mapping.findForward("busca");
+    }
+
+    private String onlyDigits(String s) {
+        if (s == null) return "";
+        return s.replaceAll("\\D", "");
     }
 }
