@@ -446,7 +446,8 @@
     });
 
     document.querySelector('input[name="nome"]')?.addEventListener('input', function(e) {
-        e.target.value = e.target.value.toUpperCase();
+        // Remove caracteres que não são letras, espaços ou acentos
+        e.target.value = e.target.value.toUpperCase().replace(/[^A-ZÁÀÂÃÉÈÊÍÏÓÒÔÕÖÚÙÛÜÇÑ\s]/g, '');
     });
 
     document.querySelector('input[name="endereco"]')?.addEventListener('input', function(e) {

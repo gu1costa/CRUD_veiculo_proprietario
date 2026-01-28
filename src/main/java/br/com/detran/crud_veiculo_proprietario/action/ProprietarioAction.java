@@ -144,7 +144,15 @@ public class ProprietarioAction extends Action {
             }
 
             p.setCpfCnpj(proprietarioForm.getCpfCnpj());
-            p.setNome(proprietarioForm.getNome());
+            
+            // Validação do nome - permite apenas letras, espaços e acentos
+            String nome = proprietarioForm.getNome();
+            if (nome != null) {
+                // Remove caracteres inválidos e converte para maiúsculo
+                nome = nome.toUpperCase().replaceAll("[^A-ZÁÀÂÃÉÈÊÍÏÓÒÔÕÖÚÙÛÜÇÑ\\s]", "");
+                p.setNome(nome.trim());
+            }
+            
             p.setEndereco(proprietarioForm.getEndereco());
 
             request.setAttribute("proprietario", p);
@@ -153,7 +161,15 @@ public class ProprietarioAction extends Action {
 
         Proprietario proprietario = new Proprietario();
         proprietario.setCpfCnpj(proprietarioForm.getCpfCnpj());
-        proprietario.setNome(proprietarioForm.getNome());
+        
+        // Validação do nome - permite apenas letras, espaços e acentos
+        String nome = proprietarioForm.getNome();
+        if (nome != null) {
+            // Remove caracteres inválidos e converte para maiúsculo
+            nome = nome.toUpperCase().replaceAll("[^A-ZÁÀÂÃÉÈÊÍÏÓÒÔÕÖÚÙÛÜÇÑ\\s]", "");
+            proprietario.setNome(nome.trim());
+        }
+        
         proprietario.setEndereco(proprietarioForm.getEndereco());
 
         String idStr = proprietarioForm.getId();
