@@ -46,6 +46,23 @@
         ORDER BY nome
     </select>
 
+    <!-- SELECT ALL PAGINADO -->
+    <select id="buscarTodosPaginado" resultMap="proprietarioResult">
+        SELECT id, cpf_cnpj, nome, endereco
+        FROM cadastro.proprietario
+        ORDER BY nome
+        LIMIT #limit# OFFSET #offset#
+    </select>
+
+    <!-- SELECT BY NOME PAGINADO -->
+    <select id="buscarPorNomePaginado" resultMap="proprietarioResult">
+        SELECT id, cpf_cnpj, nome, endereco
+        FROM cadastro.proprietario
+        WHERE UPPER(nome) LIKE '%' || UPPER(#nome#) || '%'
+        ORDER BY nome
+        LIMIT #limit# OFFSET #offset#
+    </select>
+
     <!-- SELECT BY ID -->
     <select id="buscarPorId" parameterClass="int" resultMap="proprietarioResult">
         SELECT id, cpf_cnpj, nome, endereco
@@ -60,10 +77,25 @@
         WHERE cpf_cnpj = #cpfCnpj#
     </select>
 
+    <!-- SELECT BY NOME -->
+    <select id="buscarPorNome" parameterClass="string" resultMap="proprietarioResult">
+        SELECT id, cpf_cnpj, nome, endereco
+        FROM cadastro.proprietario
+        WHERE UPPER(nome) LIKE '%' || UPPER(#nome#) || '%'
+        ORDER BY nome
+    </select>
+
     <!-- COUNT -->
     <select id="contarProprietarios" resultClass="int">
         SELECT COUNT(*)
         FROM cadastro.proprietario
+    </select>
+
+    <!-- COUNT BY NOME -->
+    <select id="contarPorNome" parameterClass="string" resultClass="int">
+        SELECT COUNT(*)
+        FROM cadastro.proprietario
+        WHERE UPPER(nome) LIKE '%' || UPPER(#nome#) || '%'
     </select>
 
 </sqlMap>

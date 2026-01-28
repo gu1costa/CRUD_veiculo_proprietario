@@ -207,6 +207,86 @@
         .print-btn:hover {
             background: #e5e7eb;
         }
+
+        /* Estilos modernos de paginação */
+        .pagination-container {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .pagination-info {
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pagination-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .pagination-btn:hover {
+            background: #f8fafc;
+            border-color: #0056a6;
+            color: #0056a6;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 86, 166, 0.1);
+        }
+
+        .pagination-btn.active {
+            background: #0056a6;
+            border-color: #0056a6;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 86, 166, 0.2);
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f9fafb;
+            color: #9ca3af;
+        }
+
+        .pagination-btn.disabled:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #9ca3af;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .pagination-ellipsis {
+            color: #6b7280;
+            padding: 0 4px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -232,25 +312,63 @@
 <div class="main-content">
     <h2 class="page-title">Proprietários Cadastrados</h2>
 
+    <!-- Campo de Busca -->
+    <div class="search-container" style="background: white; border: 1px solid #d1d5db; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
+        <form method="get" action="proprietario.do" style="display: flex; gap: 10px; align-items: center;">
+            <input type="hidden" name="action" value="buscar">
+            <div style="flex: 1;">
+                <input type="text" 
+                       name="nomeBusca" 
+                       class="form-control" 
+                       placeholder="Digite o nome do proprietário para buscar..."
+                       value="<%= request.getParameter("nomeBusca") != null ? request.getParameter("nomeBusca") : "" %>"
+                       style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </div>
+            <button type="submit" class="btn" style="min-width: 120px; height: 40px;">🔍 Buscar</button>
+            <a href="proprietario.do?action=listar" class="btn btn-outline" style="min-width: 120px; height: 40px; text-align: center; text-decoration: none; display: inline-block; line-height: 24px;">Limpar</a>
+        </form>
+    </div>
+
     <%
-        String msg = request.getParameter("msg");
-        if ("criado".equals(msg)) {
+        String mensagem = (String) request.getAttribute("mensagem");
+        if (mensagem != null && !mensagem.trim().isEmpty()) {
+    %>
+    <div class="alert alert-success"><%= mensagem %></div>
+    <%
+        } else {
+            String msg = request.getParameter("msg");
+            if ("criado".equals(msg)) {
     %>
     <div class="alert alert-success">Proprietário cadastrado com sucesso!</div>
     <%
-    } else if ("atualizado".equals(msg)) {
+            } else if ("atualizado".equals(msg)) {
     %>
     <div class="alert alert-success">Proprietário atualizado com sucesso!</div>
     <%
-    } else if ("deletado".equals(msg)) {
+            } else if ("deletado".equals(msg)) {
     %>
     <div class="alert alert-success">Proprietário removido com sucesso!</div>
-    <% } %>
+    <%
+            }
+        }
+    %>
 
     <%
+        String nomeBusca = request.getParameter("nomeBusca");
         List<Proprietario> proprietarios = (List<Proprietario>) request.getAttribute("proprietarios");
         if (proprietarios != null && !proprietarios.isEmpty()) {
     %>
+    <% if (nomeBusca != null && !nomeBusca.trim().isEmpty()) { %>
+    <div style="background: #f0f7ff; border: 1px solid #bfdbfe; padding: 10px; margin-bottom: 15px; border-radius: 4px; color: #0056a6;">
+        <strong>Resultados da busca:</strong> <%= proprietarios.size() %> proprietário(s) encontrado(s) para "<%= nomeBusca %>"
+        <% 
+            Integer totalRegistros = (Integer) request.getAttribute("totalRegistros");
+            if (totalRegistros != null && totalRegistros > proprietarios.size()) {
+        %>
+        (mostrando <%= proprietarios.size() %> de <%= totalRegistros %> registros)
+        <% } %>
+    </div>
+    <% } %>
     <div class="table-container">
         <table>
             <thead>
@@ -286,15 +404,117 @@
             </tbody>
         </table>
     </div>
+    
+    <!-- Paginação -->
+    <%
+        Integer paginaAtual = (Integer) request.getAttribute("paginaAtual");
+        Integer totalPaginas = (Integer) request.getAttribute("totalPaginas");
+        Integer totalRegistros = (Integer) request.getAttribute("totalRegistros");
+        Integer registrosPorPagina = (Integer) request.getAttribute("registrosPorPagina");
+        
+        if (paginaAtual != null && totalPaginas != null && totalPaginas > 1) {
+    %>
+    <div class="pagination-container">
+        <div class="pagination-info">
+            Mostrando <%= (paginaAtual - 1) * registrosPorPagina + 1 %> a <%= Math.min(paginaAtual * registrosPorPagina, totalRegistros) %> de <%= totalRegistros %> proprietários
+        </div>
+        
+        <div class="pagination">
+            <% if (paginaAtual > 1) { %>
+                <a href="?action=<%= nomeBusca != null ? "buscar" : "listar" %>&pagina=1<%= nomeBusca != null ? "&nomeBusca=" + nomeBusca : "" %>" 
+                   class="pagination-btn">
+                    «
+                </a>
+                <a href="?action=<%= nomeBusca != null ? "buscar" : "listar" %>&pagina=<%= paginaAtual - 1 %><%= nomeBusca != null ? "&nomeBusca=" + nomeBusca : "" %>" 
+                   class="pagination-btn">
+                    ‹
+                </a>
+            <% } else { %>
+                <span class="pagination-btn disabled">
+                    «
+                </span>
+                <span class="pagination-btn disabled">
+                    ‹
+                </span>
+            <% } %>
+            
+            <% 
+                int inicio = Math.max(1, paginaAtual - 2);
+                int fim = Math.min(totalPaginas, paginaAtual + 2);
+                
+                // Adiciona elipsis se necessário no início
+                if (inicio > 1) {
+            %>
+                <a href="?action=<%= nomeBusca != null ? "buscar" : "listar" %>&pagina=1<%= nomeBusca != null ? "&nomeBusca=" + nomeBusca : "" %>" 
+                   class="pagination-btn">1</a>
+                <% if (inicio > 2) { %>
+                    <span class="pagination-ellipsis">...</span>
+                <% } %>
+            <% } %>
+            
+            <% 
+                for (int i = inicio; i <= fim; i++) {
+                    if (i == paginaAtual) {
+            %>
+                <span class="pagination-btn active"><%= i %></span>
+            <%      } else { %>
+                <a href="?action=<%= nomeBusca != null ? "buscar" : "listar" %>&pagina=<%= i %><%= nomeBusca != null ? "&nomeBusca=" + nomeBusca : "" %>" 
+                   class="pagination-btn"><%= i %></a>
+            <%      }
+                } %>
+            
+            <% 
+                // Adiciona elipsis se necessário no fim
+                if (fim < totalPaginas) {
+                    if (fim < totalPaginas - 1) {
+            %>
+                        <span class="pagination-ellipsis">...</span>
+                    <% } %>
+                    <a href="?action=<%= nomeBusca != null ? "buscar" : "listar" %>&pagina=<%= totalPaginas %><%= nomeBusca != null ? "&nomeBusca=" + nomeBusca : "" %>" 
+                       class="pagination-btn"><%= totalPaginas %></a>
+            <% } %>
+            
+            <% if (paginaAtual < totalPaginas) { %>
+                <a href="?action=<%= nomeBusca != null ? "buscar" : "listar" %>&pagina=<%= paginaAtual + 1 %><%= nomeBusca != null ? "&nomeBusca=" + nomeBusca : "" %>" 
+                   class="pagination-btn">
+                    ›
+                </a>
+                <a href="?action=<%= nomeBusca != null ? "buscar" : "listar" %>&pagina=<%= totalPaginas %><%= nomeBusca != null ? "&nomeBusca=" + nomeBusca : "" %>" 
+                   class="pagination-btn">
+                    »
+                </a>
+            <% } else { %>
+                <span class="pagination-btn disabled">
+                    ›
+                </span>
+                <span class="pagination-btn disabled">
+                    »
+                </span>
+            <% } %>
+        </div>
+    </div>
+    <% } %>
     <%
     } else {
+        if (nomeBusca != null && !nomeBusca.trim().isEmpty()) {
+    %>
+    <div class="empty-state">
+        <h3>Nenhum proprietário encontrado</h3>
+        <p>Não foi encontrado nenhum proprietário com o nome "<%= nomeBusca %>"</p>
+        <a href="proprietario.do?action=listar" class="btn" style="margin-top: 20px;">Ver Todos os Proprietários</a>
+    </div>
+    <%
+        } else {
     %>
     <div class="empty-state">
         <h3>Nenhum proprietário cadastrado</h3>
         <p>Cadastre o primeiro proprietário para começar</p>
         <a href="proprietario.do?action=novo" class="btn" style="margin-top: 20px;">Cadastrar Proprietário</a>
     </div>
-    <% } %>
+    <%
+        }
+    }
+    %>
 </div>
 
 <div class="footer">

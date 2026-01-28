@@ -6,7 +6,9 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProprietarioDAO {
 
@@ -59,6 +61,35 @@ public class ProprietarioDAO {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Proprietario> buscarTodosPaginado(int pagina, int registrosPorPagina) {
+        try {
+            int offset = (pagina - 1) * registrosPorPagina;
+            Map<String, Object> params = new HashMap<>();
+            params.put("offset", offset);
+            params.put("limit", registrosPorPagina);
+            return sqlMapClient.queryForList("Proprietario.buscarTodosPaginado", params);
+        } catch (SQLException e) {
+            System.err.println("✗ Erro ao buscar proprietários paginados: " + e.getMessage());
+            return new ArrayList<Proprietario>();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Proprietario> buscarPorNomePaginado(String nome, int pagina, int registrosPorPagina) {
+        try {
+            int offset = (pagina - 1) * registrosPorPagina;
+            Map<String, Object> params = new HashMap<>();
+            params.put("nome", nome);
+            params.put("offset", offset);
+            params.put("limit", registrosPorPagina);
+            return sqlMapClient.queryForList("Proprietario.buscarPorNomePaginado", params);
+        } catch (SQLException e) {
+            System.err.println("✗ Erro ao buscar proprietários por nome paginado: " + e.getMessage());
+            return new ArrayList<Proprietario>();
+        }
+    }
+
     public Proprietario buscarPorId(Integer id) {
         try {
             return (Proprietario) sqlMapClient.queryForObject("Proprietario.buscarPorId", id);
@@ -77,12 +108,32 @@ public class ProprietarioDAO {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Proprietario> buscarPorNome(String nome) {
+        try {
+            return sqlMapClient.queryForList("Proprietario.buscarPorNome", nome);
+        } catch (SQLException e) {
+            System.err.println("✗ Erro ao buscar proprietários por nome: " + e.getMessage());
+            return new ArrayList<Proprietario>();
+        }
+    }
+
     public int contar() {
         try {
             Integer count = (Integer) sqlMapClient.queryForObject("Proprietario.contarProprietarios");
             return count != null ? count : 0;
         } catch (SQLException e) {
             System.err.println("✗ Erro ao contar proprietários: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    public int contarPorNome(String nome) {
+        try {
+            Integer count = (Integer) sqlMapClient.queryForObject("Proprietario.contarPorNome", nome);
+            return count != null ? count : 0;
+        } catch (SQLException e) {
+            System.err.println("✗ Erro ao contar proprietários por nome: " + e.getMessage());
             return 0;
         }
     }

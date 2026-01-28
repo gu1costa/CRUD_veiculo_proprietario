@@ -380,6 +380,10 @@
                     <div class="info-label">Proprietário</div>
                     <div class="info-value"><%= v.getProprietarioNome() %></div>
                 </div>
+                <div class="info-item">
+                    <div class="info-label">CPF/CNPJ</div>
+                    <div class="info-value"><%= v.getProprietarioCpfCnpj() %></div>
+                </div>
                 <div class="info-item" style="grid-column: span 2;">
                     <div class="info-label">Endereço</div>
                     <div class="info-value"><%= v.getProprietarioEndereco() %></div>

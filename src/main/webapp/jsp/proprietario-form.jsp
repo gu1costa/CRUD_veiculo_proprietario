@@ -445,6 +445,14 @@
         e.target.value = e.target.value.replace(/\D/g, '');
     });
 
+    document.querySelector('input[name="nome"]')?.addEventListener('input', function(e) {
+        e.target.value = e.target.value.toUpperCase();
+    });
+
+    document.querySelector('input[name="endereco"]')?.addEventListener('input', function(e) {
+        e.target.value = e.target.value.toUpperCase();
+    });
+
     document.querySelector('input[name="placa"]')?.addEventListener('input', function(e) {
         e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
     });

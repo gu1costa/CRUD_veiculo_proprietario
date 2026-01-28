@@ -30,6 +30,8 @@ public class ProprietarioAction extends Action {
 
         if ("listar".equals(action) || action == null) {
             return listar(mapping, request);
+        } else if ("buscar".equals(action)) {
+            return buscar(mapping, request);
         } else if ("novo".equals(action)) {
             return novo(mapping, request);
         } else if ("editar".equals(action)) {
@@ -44,8 +46,66 @@ public class ProprietarioAction extends Action {
     }
 
     private ActionForward listar(ActionMapping mapping, HttpServletRequest request) {
-        List<Proprietario> proprietarios = proprietarioDAO.buscarTodos();
+        int pagina = 1;
+        int registrosPorPagina = 15;
+        
+        String paginaParam = request.getParameter("pagina");
+        if (paginaParam != null && !paginaParam.trim().isEmpty()) {
+            try {
+                pagina = Integer.parseInt(paginaParam);
+                if (pagina < 1) pagina = 1;
+            } catch (NumberFormatException e) {
+                pagina = 1;
+            }
+        }
+        
+        List<Proprietario> proprietarios = proprietarioDAO.buscarTodosPaginado(pagina, registrosPorPagina);
+        int totalRegistros = proprietarioDAO.contar();
+        int totalPaginas = (int) Math.ceil((double) totalRegistros / registrosPorPagina);
+        
         request.setAttribute("proprietarios", proprietarios);
+        request.setAttribute("paginaAtual", pagina);
+        request.setAttribute("totalPaginas", totalPaginas);
+        request.setAttribute("totalRegistros", totalRegistros);
+        request.setAttribute("registrosPorPagina", registrosPorPagina);
+        
+        return mapping.findForward("listar");
+    }
+
+    private ActionForward buscar(ActionMapping mapping, HttpServletRequest request) {
+        String nomeBusca = request.getParameter("nomeBusca");
+        int pagina = 1;
+        int registrosPorPagina = 15;
+        
+        String paginaParam = request.getParameter("pagina");
+        if (paginaParam != null && !paginaParam.trim().isEmpty()) {
+            try {
+                pagina = Integer.parseInt(paginaParam);
+                if (pagina < 1) pagina = 1;
+            } catch (NumberFormatException e) {
+                pagina = 1;
+            }
+        }
+        
+        List<Proprietario> proprietarios;
+        int totalRegistros;
+        
+        if (nomeBusca != null && !nomeBusca.trim().isEmpty()) {
+            proprietarios = proprietarioDAO.buscarPorNomePaginado(nomeBusca.trim().toUpperCase(), pagina, registrosPorPagina);
+            totalRegistros = proprietarioDAO.contarPorNome(nomeBusca.trim().toUpperCase());
+        } else {
+            proprietarios = proprietarioDAO.buscarTodosPaginado(pagina, registrosPorPagina);
+            totalRegistros = proprietarioDAO.contar();
+        }
+        
+        int totalPaginas = (int) Math.ceil((double) totalRegistros / registrosPorPagina);
+        
+        request.setAttribute("proprietarios", proprietarios);
+        request.setAttribute("paginaAtual", pagina);
+        request.setAttribute("totalPaginas", totalPaginas);
+        request.setAttribute("totalRegistros", totalRegistros);
+        request.setAttribute("registrosPorPagina", registrosPorPagina);
+        
         return mapping.findForward("listar");
     }
 
