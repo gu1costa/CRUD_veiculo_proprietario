@@ -324,8 +324,8 @@
                        value="<%= request.getParameter("nomeBusca") != null ? request.getParameter("nomeBusca") : "" %>"
                        style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 4px;">
             </div>
-            <button type="submit" class="btn" style="min-width: 120px; height: 40px;">🔍 Buscar</button>
-            <a href="proprietario.do?action=listar" class="btn btn-outline" style="min-width: 120px; height: 40px; text-align: center; text-decoration: none; display: inline-block; line-height: 24px;">Limpar</a>
+            <button type="submit" class="btn" style="min-width: 120px; height: 40px; font-size: 14px;">Buscar</button>
+            <a href="proprietario.do?action=listar" class="btn btn-outline" style="min-width: 120px; height: 40px; text-align: center; text-decoration: none; display: inline-block; line-height: 24px; font-size: 14px;">Limpar</a>
         </form>
     </div>
 

@@ -1,5 +1,7 @@
 package br.com.detran.crud_veiculo_proprietario.form;
 
+import br.com.detran.crud_veiculo_proprietario.dao.ProprietarioDAO;
+import br.com.detran.crud_veiculo_proprietario.model.Proprietario;
 import br.com.detran.crud_veiculo_proprietario.util.CpfCnpjValidator;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -29,6 +31,20 @@ public class ProprietarioForm extends ActionForm {
             errors.add("cpfCnpj", new ActionMessage("error.cpfCnpj.required"));
         } else if (!CpfCnpjValidator.isValidCpfOrCnpj(doc)) {
             errors.add("cpfCnpj", new ActionMessage("error.cpfCnpj.invalid"));
+        } else {
+            // ✅ Checagem de duplicidade (DB)
+            ProprietarioDAO dao = new ProprietarioDAO();
+            Proprietario existente = dao.buscarPorCpfCnpj(doc);
+
+            if (existente != null) {
+                Integer idAtual = parseId(this.id);
+
+                // Se estiver cadastrando (idAtual == null) -> duplicado
+                // Se estiver editando -> duplicado só se o id for diferente
+                if (idAtual == null || !existente.getId().equals(idAtual)) {
+                    errors.add("cpfCnpj", new ActionMessage("error.cpfCnpj.duplicate"));
+                }
+            }
         }
 
         if (nome == null || nome.trim().isEmpty()) {
@@ -55,6 +71,17 @@ public class ProprietarioForm extends ActionForm {
     private String onlyDigits(String s) {
         if (s == null) return "";
         return s.replaceAll("\\D", "");
+    }
+
+    private Integer parseId(String id) {
+        if (id == null) return null;
+        String s = id.trim();
+        if (s.isEmpty()) return null;
+        try {
+            return Integer.valueOf(s);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     public String getId() {

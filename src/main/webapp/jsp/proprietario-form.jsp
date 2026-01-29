@@ -12,205 +12,42 @@
     <title>Proprietário - DETRAN</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #f0f2f5;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            background: #0056a6;
-            color: white;
-            padding: 20px 40px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border-bottom: 3px solid #003366;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; min-height: 100vh; display: flex; flex-direction: column; }
+        .header { background: #0056a6; color: white; padding: 20px 40px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-bottom: 3px solid #003366; }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
         .logo h1 { font-size: 24px; font-weight: 600; }
-
-        .back-btn {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
+        .back-btn { color: white; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 5px; }
         .back-btn:hover { text-decoration: underline; }
-
-        .main-content {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            flex: 1;
-        }
-
-        .page-title {
-            color: #0056a6;
-            margin-bottom: 30px;
-            font-size: 28px;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 10px;
-        }
-
-        .card {
-            background: white;
-            border: 1px solid #d1d5db;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            padding: 30px;
-            margin-bottom: 25px;
-        }
-
-        .card-title {
-            color: #1f2937;
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
+        .main-content { max-width: 1200px; margin: 40px auto; padding: 0 20px; flex: 1; }
+        .page-title { color: #0056a6; margin-bottom: 30px; font-size: 28px; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
+        .card { background: white; border: 1px solid #d1d5db; box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 30px; margin-bottom: 25px; }
+        .card-title { color: #1f2937; font-size: 20px; font-weight: 600; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #e5e7eb; }
         .form-group { margin-bottom: 20px; }
-
-        .form-group label {
-            display: block;
-            color: #374151;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.2s;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #0056a6;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            background: #0056a6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
+        .form-group label { display: block; color: #374151; font-weight: 500; margin-bottom: 8px; }
+        .form-control { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1em; transition: border-color 0.2s; }
+        .form-control:focus { outline: none; border-color: #0056a6; }
+        .btn { padding: 12px 30px; background: #0056a6; color: white; border: none; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-decoration: none; display: inline-block; }
         .btn:hover { background: #004494; }
-
         .btn-secondary { background: #718096; }
         .btn-secondary:hover { background: #5a6777; }
-
         .btn-danger { background: #e53e3e; }
         .btn-danger:hover { background: #c53030; }
-
-        .btn-small {
-            padding: 8px 15px;
-            font-size: 0.9em;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #10b981;
-        }
-
-        .alert-error {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #ef4444;
-        }
-
+        .btn-small { padding: 8px 15px; font-size: 0.9em; }
+        .button-group { display: flex; gap: 15px; margin-top: 25px; }
+        .alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+        .alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
         .alert-error ul { margin-left: 18px; }
-
         .vehicle-section { margin-top: 40px; }
-
         .vehicle-list { margin-top: 20px; }
-
-        .vehicle-card {
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 5px solid #0056a6;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        .vehicle-card { background: #f7fafc; padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #0056a6; display: flex; justify-content: space-between; align-items: center; }
         .vehicle-info { flex: 1; }
-
-        .vehicle-info h3 {
-            color: #2d3748;
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-
+        .vehicle-info h3 { color: #2d3748; margin-bottom: 10px; font-size: 18px; }
         .vehicle-details { color: #718096; }
-
-        .add-vehicle-form {
-            background: #edf2f7;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 30px;
-            color: #718096;
-        }
-
-        .footer {
-            background: #f8f9fa;
-            border-top: 1px solid #e0e0e0;
-            padding: 20px;
-            text-align: center;
-            color: #6b7280;
-            margin-top: auto;
-        }
-
+        .add-vehicle-form { background: #edf2f7; padding: 20px; border-radius: 10px; margin-top: 20px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .empty-state { text-align: center; padding: 30px; color: #718096; }
+        .footer { background: #f8f9fa; border-top: 1px solid #e0e0e0; padding: 20px; text-align: center; color: #6b7280; margin-top: auto; }
         .required { color: #e53e3e; }
     </style>
 </head>
@@ -253,6 +90,23 @@
     String renavamTemp = (String) request.getAttribute("renavamTemp");
 
     String mensagem = (String) request.getAttribute("mensagem");
+
+    // ✅ Mantém valores digitados quando dá erro de validação
+    String cpfCnpjValue =
+            (proprietario != null ? proprietario.getCpfCnpj() :
+                    (request.getParameter("cpfCnpj") != null ? request.getParameter("cpfCnpj") : ""));
+
+    String nomeValue =
+            (proprietario != null ? proprietario.getNome() :
+                    (request.getParameter("nome") != null ? request.getParameter("nome") : ""));
+
+    String enderecoValue =
+            (proprietario != null ? proprietario.getEndereco() :
+                    (request.getParameter("endereco") != null ? request.getParameter("endereco") : ""));
+
+    String idValue =
+            (isEdicao ? String.valueOf(proprietarioId) :
+                    (request.getParameter("id") != null ? request.getParameter("id") : ""));
 %>
 
 <div class="header">
@@ -260,14 +114,13 @@
         <div class="logo">
             <h1><%= isEdicao ? "Editar Proprietário" : "Novo Proprietário" %></h1>
         </div>
-        <a href="proprietario.do?action=listar" class="back-btn">← Voltar para Lista</a>
+        <a href="${pageContext.request.contextPath}/proprietario.do?action=listar" class="back-btn">← Voltar para Lista</a>
     </div>
 </div>
 
 <div class="main-content">
     <h2 class="page-title"><%= isEdicao ? "Atualizar Dados do Proprietário" : "Cadastrar Novo Proprietário" %></h2>
 
-    <%-- ✅ Mensagem de sucesso vinda do Action --%>
     <% if (mensagem != null && !mensagem.trim().isEmpty()) { %>
     <div class="alert alert-success">
         ✅ <%= mensagem %>
@@ -277,7 +130,6 @@
     <div class="card">
         <h3 class="card-title">Informações do Proprietário</h3>
 
-        <%-- ✅ Erros apenas do proprietário --%>
         <% if (hasPropErrors) { %>
         <div class="alert alert-error">
             <html:errors property="cpfCnpj"/>
@@ -286,10 +138,12 @@
         </div>
         <% } %>
 
-        <form method="post" action="proprietario.do">
+        <!-- ✅ IMPORTANTÍSSIMO: usar contextPath pra garantir cair no Struts -->
+        <form method="post" action="${pageContext.request.contextPath}/proprietario.do">
             <input type="hidden" name="action" value="salvar">
-            <% if (isEdicao) { %>
-            <input type="hidden" name="id" value="<%= proprietarioId %>">
+
+            <% if (idValue != null && !idValue.trim().isEmpty()) { %>
+            <input type="hidden" name="id" value="<%= idValue %>">
             <% } %>
 
             <div class="form-group">
@@ -297,9 +151,11 @@
                 <input type="text"
                        name="cpfCnpj"
                        class="form-control"
-                       value="<%= proprietario != null ? proprietario.getCpfCnpj() : "" %>"
+                       value="<%= cpfCnpjValue %>"
                        placeholder="Digite apenas números (11 dígitos para CPF ou 14 para CNPJ)"
                        maxlength="14"
+                    <%= isEdicao ? "readonly" : "" %>
+                    <%= isEdicao ? "style=\"background: #f5f5f5; cursor: not-allowed;\"" : "" %>
                        required>
             </div>
 
@@ -308,7 +164,7 @@
                 <input type="text"
                        name="nome"
                        class="form-control"
-                       value="<%= proprietario != null ? proprietario.getNome() : "" %>"
+                       value="<%= nomeValue %>"
                        placeholder="Digite o nome completo do proprietário"
                        maxlength="100"
                        required>
@@ -319,7 +175,7 @@
                 <input type="text"
                        name="endereco"
                        class="form-control"
-                       value="<%= proprietario != null ? proprietario.getEndereco() : "" %>"
+                       value="<%= enderecoValue %>"
                        placeholder="Rua, número, bairro, cidade - UF"
                        required>
             </div>
@@ -328,7 +184,7 @@
                 <button type="submit" class="btn">
                     <%= isEdicao ? "💾 Salvar Alterações" : "➕ Cadastrar Proprietário" %>
                 </button>
-                <a href="proprietario.do?action=listar" class="btn btn-secondary">Cancelar</a>
+                <a href="${pageContext.request.contextPath}/proprietario.do?action=listar" class="btn btn-secondary">Cancelar</a>
             </div>
         </form>
     </div>
@@ -366,7 +222,7 @@
                         ✏️ Editar
                     </a>
 
-                    <a href="veiculo.do?action=deletar&id=<%= v.getId() %>&idProp=<%= proprietarioId %>&origem=proprietario"
+                    <a href="${pageContext.request.contextPath}/veiculo.do?action=deletar&id=<%= v.getId() %>&idProp=<%= proprietarioId %>&origem=proprietario"
                        class="btn btn-small btn-danger"
                        onclick="return confirm('Tem certeza que deseja remover este veículo?')">
                         🗑️ Remover
@@ -384,7 +240,6 @@
         <div class="add-vehicle-form">
             <h3 style="margin-bottom: 20px; color: #2d3748;">➕ Adicionar Novo Veículo</h3>
 
-            <%-- ✅ Erros apenas do veículo (no card de adicionar) --%>
             <% if (hasVeiculoErrors) { %>
             <div class="alert alert-error">
                 <html:errors property="placa"/>
@@ -446,7 +301,6 @@
     });
 
     document.querySelector('input[name="nome"]')?.addEventListener('input', function(e) {
-        // Remove caracteres que não são letras, espaços ou acentos
         e.target.value = e.target.value.toUpperCase().replace(/[^A-ZÁÀÂÃÉÈÊÍÏÓÒÔÕÖÚÙÛÜÇÑ\s]/g, '');
     });
 
