@@ -86,6 +86,15 @@ public class VeiculoDAO {
         }
     }
 
+    public Veiculo buscarPorRenavam(String renavam) {
+        try {
+            return (Veiculo) sqlMapClient.queryForObject("Veiculo.buscarPorRenavam", renavam);
+        } catch (SQLException e) {
+            System.err.println("✗ Erro ao buscar veículo por renavam: " + e.getMessage());
+            return null;
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public List<Veiculo> buscarPorCpfCnpj(String cpfCnpj) {
         try {

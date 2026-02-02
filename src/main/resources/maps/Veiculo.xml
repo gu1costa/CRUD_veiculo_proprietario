@@ -79,6 +79,15 @@
         FROM funcoes.buscar_veiculo_por_placa(#placa#)
     </select>
 
+    <!-- SELECT BY RENAVAM -->
+    <select id="buscarPorRenavam" parameterClass="string" resultMap="veiculoComProprietarioResult">
+        SELECT v.id, v.placa, v.renavam, v.id_prop,
+               p.cpf_cnpj, p.nome, p.endereco
+        FROM cadastro.veiculo v
+                 INNER JOIN cadastro.proprietario p ON v.id_prop = p.id
+        WHERE v.renavam = #renavam#
+    </select>
+
     <!-- SELECT BY CPF/CNPJ (usando função do banco) -->
     <select id="buscarPorCpfCnpj" parameterClass="string" resultMap="veiculoComProprietarioResult">
         SELECT veiculo_id as id,

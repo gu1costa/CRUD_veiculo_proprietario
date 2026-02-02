@@ -31,6 +31,8 @@ public class VeiculoAction extends Action {
         }
 
         switch (action) {
+            case "novoForm":
+                return novoForm(mapping, request);
             case "novo":
                 return novo(mapping, request);
             case "editar":
@@ -49,6 +51,15 @@ public class VeiculoAction extends Action {
         List<Proprietario> proprietarios = proprietarioDAO.buscarTodos();
         request.setAttribute("proprietarios", proprietarios);
         return mapping.findForward("form");
+    }
+
+    private ActionForward novoForm(ActionMapping mapping, HttpServletRequest request) {
+        String idProp = request.getParameter("idProp");
+        if (idProp != null && !idProp.trim().isEmpty()) {
+            Proprietario proprietario = proprietarioDAO.buscarPorId(Integer.parseInt(idProp));
+            request.setAttribute("proprietario", proprietario);
+        }
+        return mapping.findForward("novoForm");
     }
 
     private ActionForward novo(ActionMapping mapping, HttpServletRequest request) {
@@ -97,6 +108,10 @@ public class VeiculoAction extends Action {
             String idProp = veiculoForm.getIdProp();
             return new ActionForward("proprietario.do?action=editar&id=" + idProp +
                     "&msg=" + (isEdicao ? "veiculo_atualizado" : "veiculo_adicionado"), true);
+        } else if ("novoForm".equals(origem)) {
+            // Veio da tela de adicionar veículo específica
+            request.setAttribute("mensagem", "Veículo cadastrado com sucesso!");
+            return mapping.findForward("novoForm");
         }
 
         return new ActionForward("veiculo.do?action=listar", true);
@@ -129,6 +144,14 @@ public class VeiculoAction extends Action {
             request.setAttribute("proprietario", proprietario);
             request.setAttribute("veiculos", veiculoDAO.buscarPorProprietario(idProp));
             return mapping.findForward("proprietarioForm");
+        } else if ("novoForm".equals(origem)) {
+            // Veio da tela de adicionar veículo específica - manter na mesma tela
+            String idProp = veiculoForm.getIdProp();
+            if (idProp != null && !idProp.trim().isEmpty()) {
+                Proprietario proprietario = proprietarioDAO.buscarPorId(Integer.parseInt(idProp));
+                request.setAttribute("proprietario", proprietario);
+            }
+            return mapping.findForward("novoForm");
         }
 
         // tela veiculo-form.jsp

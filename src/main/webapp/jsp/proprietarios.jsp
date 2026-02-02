@@ -107,6 +107,16 @@
             background: #f0f7ff;
         }
 
+        .btn-primary {
+            background: #0056a6;
+            color: white;
+            border: 1px solid #0056a6;
+        }
+
+        .btn-primary:hover {
+            background: #004494;
+        }
+
         .btn-danger {
             background: #dc2626;
         }
@@ -391,6 +401,9 @@
                     <div class="actions">
                         <a href="proprietario.do?action=editar&id=<%= p.getId() %>" class="btn btn-sm btn-outline">
                             Editar
+                        </a>
+                        <a href="veiculo.do?action=novoForm&idProp=<%= p.getId() %>" class="btn btn-sm btn-primary">
+                            Adicionar Veículo
                         </a>
                         <a href="proprietario.do?action=deletar&id=<%= p.getId() %>"
                            class="btn btn-sm btn-danger"

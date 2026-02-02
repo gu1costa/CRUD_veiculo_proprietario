@@ -1,5 +1,7 @@
 package br.com.detran.crud_veiculo_proprietario.form;
 
+import br.com.detran.crud_veiculo_proprietario.dao.VeiculoDAO;
+import br.com.detran.crud_veiculo_proprietario.model.Veiculo;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
@@ -45,6 +47,49 @@ public class VeiculoForm extends ActionForm {
 
         if (idPropNorm.isEmpty()) {
             errors.add("idProp", new ActionMessage("error.proprietario.required"));
+        }
+
+        // Validar duplicidade de placa e renavam
+        VeiculoDAO veiculoDAO = new VeiculoDAO();
+        
+        if (!placaNorm.isEmpty()) {
+            Veiculo veiculoPorPlaca = veiculoDAO.buscarPorPlaca(placaNorm);
+            if (veiculoPorPlaca != null) {
+                // Se está editando, permitir apenas se for o mesmo registro
+                if (id != null && !id.trim().isEmpty()) {
+                    try {
+                        int idAtual = Integer.parseInt(id);
+                        if (veiculoPorPlaca.getId() != idAtual) {
+                            errors.add("placa", new ActionMessage("error.placa.duplicate"));
+                        }
+                    } catch (NumberFormatException e) {
+                        errors.add("placa", new ActionMessage("error.placa.duplicate"));
+                    }
+                } else {
+                    // Novo cadastro, qualquer duplicidade é inválida
+                    errors.add("placa", new ActionMessage("error.placa.duplicate"));
+                }
+            }
+        }
+        
+        if (!renavamNorm.isEmpty()) {
+            Veiculo veiculoPorRenavam = veiculoDAO.buscarPorRenavam(renavamNorm);
+            if (veiculoPorRenavam != null) {
+                // Se está editando, permitir apenas se for o mesmo registro
+                if (id != null && !id.trim().isEmpty()) {
+                    try {
+                        int idAtual = Integer.parseInt(id);
+                        if (veiculoPorRenavam.getId() != idAtual) {
+                            errors.add("renavam", new ActionMessage("error.renavam.duplicate"));
+                        }
+                    } catch (NumberFormatException e) {
+                        errors.add("renavam", new ActionMessage("error.renavam.duplicate"));
+                    }
+                } else {
+                    // Novo cadastro, qualquer duplicidade é inválida
+                    errors.add("renavam", new ActionMessage("error.renavam.duplicate"));
+                }
+            }
         }
 
         return errors;
