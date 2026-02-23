@@ -308,11 +308,12 @@
         <div class="header-actions">
             <a href="index.jsp" class="back-btn">← Voltar</a>
 
-            <a href="${pageContext.request.contextPath}/gerarRelatorio.do?tipo=proprietarios"
+            <a href="${pageContext.request.contextPath}/gerarRelatorio.do?tipo=proprietarios&nomeBusca=${param.nomeBusca}"
                class="print-btn"
                target="_blank">
                 Imprimir Relatório
             </a>
+
 
             <a href="proprietario.do?action=novo" class="new-btn">+ Novo Proprietário</a>
         </div>

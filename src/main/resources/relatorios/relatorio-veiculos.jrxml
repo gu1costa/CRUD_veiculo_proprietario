@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio-veiculos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="BRASAO_DETRAN" class="java.lang.String"/>
+	<parameter name="LOGO_ESTADO_CE" class="java.lang.String"/>
+	<parameter name="RODAPE" class="java.lang.String"/>
+	<parameter name="QUERY_PROPRIETARIO" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/guilherme/desenvolvimento/projetos/java/CRUD_veiculo_proprietario/src/main/resources/relatorios/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  p.id,
+  p.cpf_cnpj,
+  p.nome,
+  p.endereco,
+  v.placa,
+  v.renavam
+FROM cadastro.proprietario p
+LEFT JOIN cadastro.veiculo v
+  ON v.id_prop = p.id
+WHERE
+  COALESCE(btrim(CAST($P{QUERY_PROPRIETARIO} AS text)), '') = ''
+  OR p.nome ILIKE '%' || CAST($P{QUERY_PROPRIETARIO} AS text) || '%'
+ORDER BY
+  p.nome,
+  p.id,
+  v.placa;]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cpf_cnpj" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="endereco" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="placa" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="renavam" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="grpProprietario" keepTogether="true">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+		<groupHeader>
+			<band height="82">
+				<rectangle>
+					<reportElement mode="Opaque" x="0" y="61" width="554" height="20" backcolor="#CCCCCC"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="253" y="60" width="47" height="21"/>
+					<box topPadding="4"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[VEÍCULOS]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement mode="Opaque" x="0" y="11" width="553" height="20" backcolor="#CCCCCC"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<rectangle>
+					<reportElement mode="Opaque" x="0" y="11" width="555" height="20" backcolor="#CCCCCC"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<line>
+					<reportElement x="554" y="12" width="1" height="69"/>
+				</line>
+				<line>
+					<reportElement x="0" y="11" width="555" height="1"/>
+				</line>
+				<staticText>
+					<reportElement x="241" y="11" width="71" height="19"/>
+					<box topPadding="4"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[PROPRIETÁRIO]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="31" width="554" height="1"/>
+				</line>
+				<textField>
+					<reportElement x="422" y="40" width="100" height="13"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{endereco}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="271" y="40" width="100" height="13"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{cpf_cnpj}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="17" y="40" width="34" height="13"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[NOME:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="226" y="40" width="45" height="13"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CPF/CNPJ:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="51" y="40" width="175" height="13"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{nome}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="371" y="40" width="51" height="13"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ENDEREÇO:]]></text>
+				</staticText>
+				<line>
+					<reportElement x="-1" y="11" width="1" height="71"/>
+				</line>
+				<line>
+					<reportElement x="0" y="60" width="554" height="1"/>
+				</line>
+				<line>
+					<reportElement x="0" y="81" width="555" height="1"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="27"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<image scaleImage="RetainShape">
+				<reportElement x="35" y="10" width="45" height="50"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{BRASAO_DETRAN}]]></imageExpression>
+			</image>
+			<image scaleImage="RetainShape">
+				<reportElement x="437" y="10" width="117" height="60"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_ESTADO_CE}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="102" y="4" width="350" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DEPARTAMENTO ESTADUAL DE TRÂNSITO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="24" width="350" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DETRAN - CE]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="165" y="0" width="224" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELAÇÃO DE PROPRIETÁRIOS E VEÍCULOS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="12" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="29" splitType="Prevent">
+			<staticText>
+				<reportElement x="17" y="9" width="34" height="13">
+					<printWhenExpression><![CDATA[$F{placa} != null ]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PLACA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="51" y="9" width="76" height="13">
+					<printWhenExpression><![CDATA[$F{placa} != null ]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{placa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="226" y="9" width="45" height="13">
+					<printWhenExpression><![CDATA[$F{placa} != null ]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RENAVAM:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="271" y="9" width="100" height="13">
+					<printWhenExpression><![CDATA[$F{placa} != null ]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{renavam}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-1" y="0" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="29"/>
+			</line>
+			<line>
+				<reportElement x="0" y="28" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="148" y="8" width="258" height="20">
+					<printWhenExpression><![CDATA[$F{placa} == null ]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<text><![CDATA[Nenhum veículo cadastrado para este proprietário.]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="23" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="81" splitType="Stretch">
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="58" width="555" height="23"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{RODAPE}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="204" y="38" width="82" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="286" y="38" width="52" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

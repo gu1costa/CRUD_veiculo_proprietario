@@ -1,6 +1,7 @@
 package br.com.detran.crud_veiculo_proprietario.action;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +45,27 @@ public class RelatorioAction extends Action {
             }
 
             Map<String, Object> parameters = new HashMap<String, Object>();
+
+            URL brasaoUrl = getClass().getResource("/img/BRASAO_DETRAN.png");
+            URL logoEstadoUrl = getClass().getResource("/img/LOGO_ESTADO_CE.png");
+            URL rodapeUrl = getClass().getResource("/img/RODAPE.png");
+
+            if (brasaoUrl == null) throw new RuntimeException("Não achou: /img/BRASAO_DETRAN.png");
+            if (logoEstadoUrl == null) throw new RuntimeException("Não achou: /img/LOGO_ESTADO_CE.png");
+            if(rodapeUrl == null) throw new RuntimeException("Não achou: /img/RODAPE.png");
+
+            parameters.put("BRASAO_DETRAN", brasaoUrl.toExternalForm());
+            parameters.put("LOGO_ESTADO_CE", logoEstadoUrl.toExternalForm());
+            parameters.put("RODAPE", rodapeUrl.toExternalForm());
+
+            // filtro do nome
+            String queryProprietario = request.getParameter("nomeBusca");
+
+            if (queryProprietario == null) queryProprietario = request.getParameter("nome");
+            queryProprietario = (queryProprietario == null) ? "" : queryProprietario.trim();
+
+            parameters.put("QUERY_PROPRIETARIO", queryProprietario);
+
 
             // 4. Geração do PDF
             byte[] pdfBytes = JasperRunManager.runReportToPdf(reportStream, parameters, conn);

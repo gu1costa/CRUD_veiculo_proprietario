@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_bd" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="BRASAO_DETRAN" class="java.lang.String"/>
+	<parameter name="LOGO_ESTADO_CE" class="java.lang.String"/>
+	<parameter name="RODAPE" class="java.lang.String"/>
+	<parameter name="cpfCnpj" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT dt_munic_nome, ve_placa, ve_chassi, ve_renavam, ve_uf_jurid, ve_nom_prop,
+       ve_num_cnpf_cnpj_prop, ve_endereco_arrend_prop, ve_bairro_arrend_prop,
+       ve_nome_marc_mod, ve_nome_cor, ve_nome_tipo
+FROM veiculo.veiculo_all va
+WHERE va.ve_num_cnpf_cnpj_prop = ($P{cpfCnpj}::text)
+ORDER BY va.ve_num_cnpf_cnpj_prop, va.ve_nom_prop, va.ve_placa
+LIMIT 10]]>
+	</queryString>
+	<field name="dt_munic_nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ve_placa" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ve_chassi" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ve_renavam" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ve_uf_jurid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ve_nom_prop" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ve_num_cnpf_cnpj_prop" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ve_endereco_arrend_prop" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ve_bairro_arrend_prop" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ve_nome_marc_mod" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ve_nome_cor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ve_nome_tipo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="grpProprietario" keepTogether="true">
+		<groupExpression><![CDATA[$F{ve_num_cnpf_cnpj_prop}]]></groupExpression>
+		<groupHeader>
+			<band height="80">
+				<rectangle>
+					<reportElement mode="Opaque" x="0" y="0" width="555" height="20" backcolor="#CCCCCC"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<line>
+					<reportElement x="0" y="0" width="555" height="1"/>
+				</line>
+				<staticText>
+					<reportElement x="241" y="0" width="71" height="19"/>
+					<box topPadding="4"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[PROPRIETÁRIO]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="20" width="554" height="1"/>
+				</line>
+				<line>
+					<reportElement x="554" y="1" width="1" height="79"/>
+				</line>
+				<staticText>
+					<reportElement x="5" y="25" width="37" height="11"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[NOME:]]></text>
+				</staticText>
+				<line>
+					<reportElement x="1" y="58" width="553" height="1"/>
+				</line>
+				<textField>
+					<reportElement x="42" y="25" width="189" height="11"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ve_nom_prop}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="236" y="25" width="55" height="11"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CPF/CNPJ:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="291" y="25" width="108" height="11"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ve_num_cnpf_cnpj_prop} == null ? "" :
+(
+    $F{ve_num_cnpf_cnpj_prop}.length() == 11 ?
+    ($F{ve_num_cnpf_cnpj_prop}.substring(0, 3) + "." + $F{ve_num_cnpf_cnpj_prop}.substring(3, 6) + "." + $F{ve_num_cnpf_cnpj_prop}.substring(6, 9) + "-" + $F{ve_num_cnpf_cnpj_prop}.substring(9, 11)) :
+    ($F{ve_num_cnpf_cnpj_prop}.length() == 14 ?
+        ($F{ve_num_cnpf_cnpj_prop}.substring(0, 2) + "." + $F{ve_num_cnpf_cnpj_prop}.substring(2, 5) + "." + $F{ve_num_cnpf_cnpj_prop}.substring(5, 8) + "/" + $F{ve_num_cnpf_cnpj_prop}.substring(8, 12) + "-" + $F{ve_num_cnpf_cnpj_prop}.substring(12, 14)) :
+        $F{ve_num_cnpf_cnpj_prop})
+)]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="402" y="25" width="55" height="11"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[MUNICÍPIO:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="457" y="25" width="87" height="11"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{dt_munic_nome}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="5" y="41" width="42" height="11"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[BAIRRO:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="47" y="41" width="168" height="11"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ve_bairro_arrend_prop}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="236" y="41" width="58" height="11"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ENDEREÇO:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="294" y="41" width="130" height="11"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ve_endereco_arrend_prop}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="434" y="41" width="18" height="11"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[UF:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="452" y="41" width="92" height="11"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ve_uf_jurid}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="1" y="79" width="554" height="1"/>
+				</line>
+				<rectangle>
+					<reportElement mode="Opaque" x="0" y="59" width="554" height="20" backcolor="#CCCCCC"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<staticText>
+					<reportElement x="253" y="58" width="47" height="21"/>
+					<box topPadding="4"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[VEÍCULOS]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="1" width="1" height="79"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="25"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="87" splitType="Stretch">
+			<image scaleImage="RetainShape">
+				<reportElement x="36" y="16" width="55" height="53"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{BRASAO_DETRAN}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="434" y="20" width="121" height="56"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_ESTADO_CE}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="102" y="33" width="350" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DETRAN - CE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="13" width="350" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DEPARTAMENTO ESTADUAL DE TRÂNSITO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="175" y="0" width="224" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELAÇÃO DE PROPRIETÁRIOS E VEÍCULOS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="11" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Prevent">
+			<rectangle>
+				<reportElement x="1" y="0" width="553" height="39" backcolor="#EEEEEE">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT}.intValue() % 2 == 0]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="4" width="37" height="11"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PLACA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="42" y="4" width="85" height="11"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ve_placa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="194" y="4" width="42" height="11"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CHASSI:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="236" y="4" width="100" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ve_chassi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="402" y="4" width="55" height="11"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RENAVAM:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="457" y="4" width="87" height="11"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{ve_renavam}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="19" width="48" height="11"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MODELO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="53" y="19" width="122" height="11"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ve_nome_marc_mod}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="194" y="19" width="27" height="11"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COR:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="221" y="19" width="100" height="11"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ve_nome_cor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="402" y="19" width="29" height="11"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="431" y="19" width="113" height="11"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ve_nome_tipo}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="39" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="554" y="-1" width="1" height="40"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="19" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="65" splitType="Stretch">
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="39" width="555" height="26"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{RODAPE}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="201" y="19" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="281" y="19" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
